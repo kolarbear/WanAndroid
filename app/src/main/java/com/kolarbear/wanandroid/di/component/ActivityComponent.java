@@ -1,0 +1,18 @@
+package com.kolarbear.wanandroid.di.component;
+
+import com.kolarbear.wanandroid.ui.main.MainActivity;
+import com.kolarbear.wanandroid.di.module.ActivityModule;
+import com.kolarbear.wanandroid.di.scope.ActivityScope;
+
+import dagger.Component;
+
+/**
+ * Created by Administrator on 2018/5/15.
+ */
+
+@ActivityScope
+@Component(dependencies = AppComponent.class,modules = ActivityModule.class)
+public interface ActivityComponent {
+
+    void inject(MainActivity activity);
+}

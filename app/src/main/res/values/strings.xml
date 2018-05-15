@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WanAndroid</string>
+    <string name="layout_open">打開</string>
+    <string name="layout_close">關閉</string>
+</resources>
