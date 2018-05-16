@@ -16,23 +16,31 @@
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerLayout"
-
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-        <ImageView
-            android:src="@mipmap/ic_launcher"
-            android:layout_gravity="left"
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/header_layout"
+            app:itemBackground="@color/colorWhite"
+            app:menu="@menu/menu"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
+
+        </android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>
 
-    <TextView
-        android:text="你好"
-        android:textColor="@color/colorAccent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.design.widget.BottomNavigationView
+        app:menu="@menu/bottom_menu"
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

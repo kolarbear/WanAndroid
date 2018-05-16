@@ -1,6 +1,5 @@
 package com.kolarbear.wanandroid.ui.main;
 
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,7 +10,6 @@ import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView {
 
@@ -37,7 +35,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         drawerToggle.setHomeAsUpIndicator(R.mipmap.ic_launcher);//改變圖標
         drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
         drawerLayout.addDrawerListener(drawerToggle);
-        drawerLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+//        drawerLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
     }
 

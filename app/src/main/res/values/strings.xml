@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WanAndroid</string>
-    <string name="layout_open">打開</string>
-    <string name="layout_close">關閉</string>
+    <string name="layout_open">打开</string>
+    <string name="layout_close">关闭</string>
+    <string name="my_like">我喜欢的</string>
+    <string name="about_us">关于我们</string>
+    <string name="home_title">首页</string>
+    <string name="knowledge_title">知识体系</string>
 </resources>
