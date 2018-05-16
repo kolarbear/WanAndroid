@@ -10,6 +10,7 @@ import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
 
 import butterknife.BindView;
+import me.yokeyword.fragmentation.ISupportActivity;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView {
 
@@ -53,6 +54,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     protected void initInject() {
         component.inject(this);
     }
+
+
 }
 
 

@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <FrameLayout
+            android:id="@+id/contentPanel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_gravity="start"
@@ -37,10 +37,6 @@
 
     </android.support.v4.widget.DrawerLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        app:menu="@menu/bottom_menu"
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

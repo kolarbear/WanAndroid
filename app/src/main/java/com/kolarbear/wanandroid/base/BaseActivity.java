@@ -16,12 +16,16 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.ExtraTransaction;
+import me.yokeyword.fragmentation.ISupportActivity;
+import me.yokeyword.fragmentation.SupportActivityDelegate;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Created by Administrator on 2018/5/15.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatActivity implements IView {
+public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatActivity implements IView, ISupportActivity {
 
 
     protected Unbinder bind;
@@ -84,6 +88,41 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
 
     @Override
     public void showNoNet() {
+
+    }
+
+    @Override
+    public SupportActivityDelegate getSupportDelegate() {
+        return null;
+    }
+
+    @Override
+    public ExtraTransaction extraTransaction() {
+        return null;
+    }
+
+    @Override
+    public FragmentAnimator getFragmentAnimator() {
+        return null;
+    }
+
+    @Override
+    public void setFragmentAnimator(FragmentAnimator fragmentAnimator) {
+
+    }
+
+    @Override
+    public FragmentAnimator onCreateFragmentAnimator() {
+        return null;
+    }
+
+    @Override
+    public void post(Runnable runnable) {
+
+    }
+
+    @Override
+    public void onBackPressedSupport() {
 
     }
 }
