@@ -1,5 +1,6 @@
 package com.kolarbear.wanandroid.ui.home;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.kolarbear.wanandroid.R;
@@ -22,8 +23,19 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         return R.layout.fragment_home;
     }
 
+    public static HomeFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
     protected void initView(View view) {
         presenter.example();
     }
+
 }

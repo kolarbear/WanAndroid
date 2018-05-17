@@ -6,4 +6,7 @@
     <string name="about_us">关于我们</string>
     <string name="home_title">首页</string>
     <string name="knowledge_title">知识体系</string>
+    <string name="exit_system">再按一次退出程序</string>
+    <string name="hot_title">Hot</string>
+    <string name="search_title">Search</string>
 </resources>

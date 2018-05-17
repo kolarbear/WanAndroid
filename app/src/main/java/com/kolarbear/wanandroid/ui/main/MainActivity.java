@@ -4,17 +4,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
+import com.kolarbear.wanandroid.ui.home.HomeFragment;
 
 import butterknife.BindView;
-import me.yokeyword.fragmentation.ISupportActivity;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView {
 
-
+    private long mExitTime;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawerLayout)
@@ -37,7 +40,34 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
         drawerLayout.addDrawerListener(drawerToggle);
 //        drawerLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        if (findFragment(HomeFragment.class) == null)
+        {
+            loadRootFragment(R.id.contentPanel,HomeFragment.newInstance());
+        }
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+        {
+            case R.id.menuHot:
+
+                break;
+            case R.id.menuSearch:
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -55,7 +85,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         component.inject(this);
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                ToastUtils.showShort(R.string.exit_system);
+                mExitTime = System.currentTimeMillis();
+            } else {
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
 
 
