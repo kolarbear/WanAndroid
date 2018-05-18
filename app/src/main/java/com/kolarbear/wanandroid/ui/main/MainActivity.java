@@ -1,6 +1,9 @@
 package com.kolarbear.wanandroid.ui.main;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +18,15 @@ import com.kolarbear.wanandroid.ui.home.HomeFragment;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView, NavigationView.OnNavigationItemSelectedListener {
 
     private long mExitTime;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
-
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
     @Override
     protected void initData() {
         presenter.doSomething();
@@ -39,7 +43,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         drawerToggle.setHomeAsUpIndicator(R.mipmap.ic_launcher);//改變圖標
         drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
         drawerLayout.addDrawerListener(drawerToggle);
-//        drawerLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        navigationView.setNavigationItemSelectedListener(this);
         if (findFragment(HomeFragment.class) == null)
         {
             loadRootFragment(R.id.contentPanel,HomeFragment.newInstance());
@@ -60,10 +64,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         switch (item.getItemId())
         {
             case R.id.menuHot:
-
+                ToastUtils.showShort("热点");
                 break;
             case R.id.menuSearch:
-
+                ToastUtils.showShort("搜索");
                 break;
         }
 
@@ -88,6 +92,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+            {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
                 ToastUtils.showShort(R.string.exit_system);
                 mExitTime = System.currentTimeMillis();
@@ -97,6 +106,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        switch (itemId)
+        {
+            case R.id.nav_like:
+                ToastUtils.showShort("我喜欢");
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_about:
+                ToastUtils.showShort("关于我");
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+        }
+
+
+        return false;
     }
 }
 

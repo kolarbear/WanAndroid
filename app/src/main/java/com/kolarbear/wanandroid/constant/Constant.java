@@ -5,6 +5,9 @@ package com.kolarbear.wanandroid.constant;
  *  Created by Administrator on 2018/5/15.
  */
 
-public class Constant {
+public interface Constant {
+
+    String BASE_URL = "http://www.wanandroid.com/";
+
 
 }

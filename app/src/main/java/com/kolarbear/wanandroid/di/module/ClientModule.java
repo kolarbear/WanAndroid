@@ -1,9 +1,15 @@
 package com.kolarbear.wanandroid.di.module;
 
+
+import android.text.TextUtils;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
@@ -13,16 +19,53 @@ import retrofit2.Retrofit;
 @Module
 public class ClientModule {
 
+    private String baseUrl;
 
-    @Provides
-    Retrofit provideRetrofit()
+    private ClientModule(Builder builder)
     {
-        return new Retrofit.Builder().baseUrl("").build();
+        this.baseUrl = builder.baseUrl;
+    }
+
+    @Singleton
+    @Provides
+    Retrofit provideRetrofit(OkHttpClient client)
+    {
+        return new Retrofit.Builder().baseUrl(baseUrl)
+                .client(client)
+                .build();
+    }
+
+    public static Builder builder()
+    {
+        return new Builder();
+    }
+
+    @Singleton
+    @Provides
+    OkHttpClient provideClient(Cache cache, Interceptor interceptor)
+    {
+        return new OkHttpClient();
     }
 
 
     static class Builder{
 
+        private String baseUrl;
+
+        public Builder baseUrl(String baseUrl)
+        {
+            if (TextUtils.isEmpty(baseUrl))
+            {
+                throw new IllegalArgumentException("baseUrl can not be empty!");
+            }
+            this.baseUrl = baseUrl;
+            return this;
+        }
+
+        public ClientModule build()
+        {
+            return new ClientModule(this);
+        }
     }
 
 }
