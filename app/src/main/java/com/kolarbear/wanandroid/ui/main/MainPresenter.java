@@ -2,6 +2,7 @@ package com.kolarbear.wanandroid.ui.main;
 
 import android.util.Log;
 
+import com.kolarbear.wanandroid.api.ApiService;
 import com.kolarbear.wanandroid.base.BasePresenter;
 import com.kolarbear.wanandroid.base.interfac.IView;
 import com.kolarbear.wanandroid.di.scope.ActivityScope;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
  */
 @ActivityScope
 public class MainPresenter extends BasePresenter<MainContract.MainView> implements MainContract.MainPresenter{
+
     @Inject
     public MainPresenter(IView mainView) {
         super((MainContract.MainView)mainView);
@@ -20,7 +22,7 @@ public class MainPresenter extends BasePresenter<MainContract.MainView> implemen
 
     @Override
     public void doSomething() {
-        Log.e("MainPresenter", "doSomething: ");
+        Log.e("MainPresenter", "doSomething: "+service);
         getView().showMsg();
     }
 }

@@ -44,9 +44,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
         drawerLayout.addDrawerListener(drawerToggle);
         navigationView.setNavigationItemSelectedListener(this);
-        if (findFragment(HomeFragment.class) == null)
+        if (findFragment(MainFragment.class) == null)
         {
-            loadRootFragment(R.id.contentPanel,HomeFragment.newInstance());
+            loadRootFragment(R.id.contentPanel,MainFragment.newInstance());
         }
 
 
@@ -124,8 +124,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 break;
         }
 
-
         return false;
+    }
+
+    public void setToolbarText(String text)
+    {
+        toolbar.setTitle(text);
     }
 }
 

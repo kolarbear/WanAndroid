@@ -1,5 +1,6 @@
 package com.kolarbear.wanandroid.di.module;
 
+import com.kolarbear.wanandroid.api.ApiService;
 import com.kolarbear.wanandroid.base.interfac.IView;
 import com.kolarbear.wanandroid.di.scope.ActivityScope;
 
@@ -14,7 +15,6 @@ import dagger.Provides;
 public class ActivityModule {
 
     IView iView;
-
     public ActivityModule(IView iView) {
         this.iView = iView;
     }

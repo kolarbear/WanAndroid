@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_above="@id/bottomNavigation"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,10 +14,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
-    <android.support.design.widget.BottomNavigationView
-        app:menu="@menu/bottom_menu"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 </RelativeLayout>

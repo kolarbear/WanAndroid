@@ -3,6 +3,7 @@ package com.kolarbear.wanandroid.di.component;
 import com.kolarbear.wanandroid.di.module.FragmentModule;
 import com.kolarbear.wanandroid.di.scope.FragmentScope;
 import com.kolarbear.wanandroid.ui.home.HomeFragment;
+import com.kolarbear.wanandroid.ui.main.MainFragment;
 
 import dagger.Component;
 
@@ -14,4 +15,5 @@ import dagger.Component;
 public interface FragmentComponent {
 
     void inject(HomeFragment fragment);
+
 }

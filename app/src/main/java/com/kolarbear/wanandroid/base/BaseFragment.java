@@ -14,6 +14,7 @@ import com.kolarbear.wanandroid.base.interfac.IView;
 import com.kolarbear.wanandroid.di.component.DaggerFragmentComponent;
 import com.kolarbear.wanandroid.di.component.FragmentComponent;
 import com.kolarbear.wanandroid.di.module.FragmentModule;
+import com.kolarbear.wanandroid.ui.main.MainActivity;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -39,13 +40,13 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment i
     protected FragmentComponent component;
     private Unbinder unbinder;
     private View mRootView, mErrorView, mEmptyView;
-    protected FragmentActivity _mActivity;
+    protected MainActivity _mActivity;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mDelegate.onAttach(activity);
-        _mActivity = mDelegate.getActivity();
+        _mActivity = (MainActivity) mDelegate.getActivity();
     }
 
     @Override
@@ -420,5 +421,19 @@ public abstract class BaseFragment<P extends BasePresenter> extends RxFragment i
      */
     public <T extends ISupportFragment> T findChildFragment(Class<T> fragmentClass) {
         return SupportHelper.findFragment(getChildFragmentManager(), fragmentClass);
+    }
+
+    /**
+     * 加载多个同级根Fragment,类似Wechat, QQ主页的场景
+     */
+    public void loadMultipleRootFragment(int containerId, int showPosition, ISupportFragment... toFragments) {
+        mDelegate.loadMultipleRootFragment(containerId, showPosition, toFragments);
+    }
+
+    /**
+     * show一个Fragment,hide一个Fragment ; 主要用于类似微信主页那种 切换tab的情况
+     */
+    public void showHideFragment(ISupportFragment showFragment, ISupportFragment hideFragment) {
+        mDelegate.showHideFragment(showFragment, hideFragment);
     }
 }

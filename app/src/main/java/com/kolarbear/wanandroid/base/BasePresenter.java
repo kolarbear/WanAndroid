@@ -1,9 +1,12 @@
 package com.kolarbear.wanandroid.base;
 
+import com.kolarbear.wanandroid.api.ApiService;
 import com.kolarbear.wanandroid.base.interfac.IPresenter;
 import com.kolarbear.wanandroid.base.interfac.IView;
 
 import java.lang.ref.WeakReference;
+
+import javax.inject.Inject;
 
 /**
  * Created by Administrator on 2018/5/15.
@@ -12,6 +15,9 @@ import java.lang.ref.WeakReference;
 public class BasePresenter<V extends IView> implements IPresenter {
 
     protected V view;
+
+    @Inject
+   protected ApiService service;
 
     protected WeakReference<V> reference;
 
