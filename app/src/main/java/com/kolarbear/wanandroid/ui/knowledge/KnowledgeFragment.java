@@ -11,6 +11,7 @@ import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 import com.kolarbear.wanandroid.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,6 +35,11 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     @Inject
     LeftAdapter leftAdapter;
 
+    @Inject
+    RightAdapter rightAdapter;
+
+    private List<KnowledgeBean.ChildrenBean> childrens;
+
     @Override
     protected void initInject() {
         component.inject(this);
@@ -55,9 +61,14 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     protected void initView(View view) {
 
         initLeftList();
-
-
+        initRightList();
+        childrens = new ArrayList<>();
         presenter.getKnowledgeTree();
+    }
+
+    private void initRightList() {
+        rightList.setLayoutManager(new LinearLayoutManager(getContext()));
+        rightList.setAdapter(rightAdapter);
     }
 
     private void initLeftList() {
@@ -72,8 +83,15 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
      */
     @Override
     public void showKnowledgeTree(List<KnowledgeBean> knowledgeBean) {
+        prepareRightData(knowledgeBean);
         Utils.update(refreshLayout,leftAdapter,knowledgeBean,0);
-        List<KnowledgeBean.ChildrenBean> children = knowledgeBean.get(0).getChildren();
+        Utils.update(refreshLayout,rightAdapter,childrens,0);
+    }
 
+    private void prepareRightData(List<KnowledgeBean> knowledgeBean) {
+        for (int i = 0; i < knowledgeBean.size(); i++) {
+            List<KnowledgeBean.ChildrenBean> children = knowledgeBean.get(i).getChildren();
+            childrens.addAll(children);
+        }
     }
 }

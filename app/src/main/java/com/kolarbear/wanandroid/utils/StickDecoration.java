@@ -1,6 +1,8 @@
 package com.kolarbear.wanandroid.utils;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +14,18 @@ import android.view.View;
 
 public class StickDecoration extends RecyclerView.ItemDecoration {
 
+    private int mDecorationHeight = 40;
+    private final Paint mPaint;
+    private final Paint mTextPaint;
+
+
+    public StickDecoration() {
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setColor(Color.parseColor("#FF4081"));
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTextSize(16);
+    }
 
     /**
      * 绘制在最上面
@@ -22,6 +36,9 @@ public class StickDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
+        int right = parent.getRight();
+        int left = parent.getLeft();
+
     }
 
     /**
@@ -45,5 +62,6 @@ public class StickDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
+        outRect.top = mDecorationHeight;
     }
 }
