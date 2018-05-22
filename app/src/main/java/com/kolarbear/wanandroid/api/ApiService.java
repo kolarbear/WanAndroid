@@ -3,6 +3,7 @@ package com.kolarbear.wanandroid.api;
 import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
+import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 
 import java.util.List;
 
@@ -17,7 +18,9 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    //首页banner http://www.wanandroid.com/banner/json
+    /**
+     * 首页banner http://www.wanandroid.com/banner/json
+     */
     @GET("banner/json")
     Observable<BaseBean<List<HomeBanner>>> homeBanner();
 
@@ -31,4 +34,14 @@ public interface ApiService {
      */
     @GET("article/list/{page}/json")
     Observable<BaseBean<HomeArticle>> homeArticle(@Path("page") int page);
+
+
+    /**
+     *  http://www.wanandroid.com/tree/json
+         方法：GET
+         参数：无
+     */
+    @GET("tree/json")
+    Observable<BaseBean<List<KnowledgeBean>>> knowledgeTree();
+
 }

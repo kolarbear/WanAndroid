@@ -1,5 +1,6 @@
 package com.kolarbear.wanandroid.ui.home;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,8 +13,10 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
+import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
 import com.kolarbear.wanandroid.utils.GlideImageLoader;
+import com.kolarbear.wanandroid.utils.Utils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
@@ -27,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
+ * 首页
  * Created by Administrator on 2018/5/15.
  */
 
@@ -77,11 +81,12 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         View mHomeHeader = LayoutInflater.from(getContext()).inflate(R.layout.layout_home_header, null);
         banner = mHomeHeader.findViewById(R.id.banner);
         adapter.addHeaderView(mHomeHeader);
-
-
+        adapter.setOnLoadMoreListener(this,articleList);
+        refreshLayout.setOnRefreshListener(this);
 
         presenter.example();
         presenter.loadBanner(); //加载banner数据
+        presenter.loadHomeArticle();//加载文章列表
     }
 
     /**
@@ -105,11 +110,16 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     //刷新
     @Override
     public void onRefresh() {
-
+        presenter.refresh();
     }
     //加载更多
     @Override
     public void onLoadMoreRequested() {
+        presenter.loadMore();
+    }
 
+    @Override
+    public void showArticles(List<HomeArticle.DatasBean> datas, int type) {
+        Utils.update(refreshLayout,adapter,datas,type);
     }
 }

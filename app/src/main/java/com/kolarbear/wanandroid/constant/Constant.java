@@ -9,5 +9,6 @@ public interface Constant {
 
     String BASE_URL = "http://www.wanandroid.com/";
 
+    int PAGE_SIZE = 20;
 
 }

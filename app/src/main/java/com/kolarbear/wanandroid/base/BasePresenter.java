@@ -17,7 +17,7 @@ public class BasePresenter<V extends IView> implements IPresenter {
     protected V view;
 
     @Inject
-   protected ApiService service;
+    protected ApiService service;
 
     protected WeakReference<V> reference;
 

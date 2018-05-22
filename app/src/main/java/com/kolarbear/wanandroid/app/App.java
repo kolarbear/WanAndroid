@@ -3,6 +3,7 @@ package com.kolarbear.wanandroid.app;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
+import com.kolarbear.wanandroid.BuildConfig;
 import com.kolarbear.wanandroid.constant.Constant;
 import com.kolarbear.wanandroid.di.component.AppComponent;
 import com.kolarbear.wanandroid.di.component.DaggerAppComponent;
@@ -12,9 +13,11 @@ import com.kolarbear.wanandroid.di.module.ServiceModule;
 import com.kolarbear.wanandroid.http.HttpGlobalHandler;
 import com.squareup.leakcanary.LeakCanary;
 
+import me.yokeyword.fragmentation.Fragmentation;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import timber.log.Timber;
 
 /**
  *  本项目由
@@ -37,6 +40,22 @@ public class App extends Application {
         LeakCanary.install(this);//内存泄漏检测
         //初始化工具类
         Utils.init(this);
+        if (BuildConfig.DEBUG)
+        {
+            Timber.plant(new Timber.DebugTree());
+        }
+        initAppComponent();
+        initFragmentation();
+    }
+
+    private void initFragmentation() {
+        Fragmentation.builder()
+                .stackViewMode(Fragmentation.BUBBLE)
+                .debug(BuildConfig.DEBUG)
+                .install();
+    }
+
+    private void initAppComponent() {
         appComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .clientModule(getClientModule())

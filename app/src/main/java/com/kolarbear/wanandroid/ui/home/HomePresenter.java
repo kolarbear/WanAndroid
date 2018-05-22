@@ -10,6 +10,7 @@ import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
 import com.kolarbear.wanandroid.di.scope.FragmentScope;
 import com.kolarbear.wanandroid.utils.RxScheduler;
+import com.kolarbear.wanandroid.utils.Utils;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ import io.reactivex.functions.Consumer;
 @FragmentScope
 public class HomePresenter extends BasePresenter<HomeContract.IHomeView> {
 
-    int page;
-    boolean refresh;
+    private int page;
+    private boolean refresh;
 
     @Inject
     public HomePresenter(IView view) {
@@ -74,7 +75,12 @@ public class HomePresenter extends BasePresenter<HomeContract.IHomeView> {
                     public void accept(BaseBean<HomeArticle> homeArticleBaseBean) throws Exception {
                         if (homeArticleBaseBean.errorCode==0)//获取数据成功
                         {
-
+                            if (refresh)
+                            {
+                                getView().showArticles(homeArticleBaseBean.data.getDatas(), Utils.TYPE_REFRESH);
+                            }else {
+                                getView().showArticles(homeArticleBaseBean.data.getDatas(), Utils.TYPE_LOAD_MORE);
+                            }
                         }
                     }
                 }, new Consumer<Throwable>() {

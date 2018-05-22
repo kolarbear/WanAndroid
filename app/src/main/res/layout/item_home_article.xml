@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_marginTop="15dp"
-    android:layout_marginLeft="@dimen/dp_10"
-    android:layout_marginRight="@dimen/dp_10"
+
+
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:src="@mipmap/ic_launcher"
         android:id="@+id/iv_portrait"
-
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_width="48dp"
         android:layout_height="48dp" />
 
@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:id="@+id/tv_date"
         android:layout_marginTop="15dp"
-
+        android:layout_marginRight="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -36,6 +36,7 @@
         android:layout_below="@id/iv_portrait"
         android:id="@+id/tv_article_title"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/dp_10"
         android:text="开源的Material Design 豆瓣客户端Douya"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -46,6 +47,7 @@
         android:id="@+id/tv_article_category"
         android:layout_marginTop="20dp"
         android:text="完整项目"
+        android:layout_marginLeft="@dimen/dp_10"
         android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -55,7 +57,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginRight="@dimen/dp_10"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_action_no_like"/>
+    <View
+        android:layout_marginTop="10dp"
+        android:background="@color/colorEEE"
+        android:layout_below="@id/iv_collect"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
 </RelativeLayout>
