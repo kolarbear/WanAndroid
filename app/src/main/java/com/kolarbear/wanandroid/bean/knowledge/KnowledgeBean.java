@@ -26,6 +26,16 @@ public class KnowledgeBean {
     private int order;
     private int parentChapterId;
     private int visible;
+    private boolean select;
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
     private List<ChildrenBean> children;
 
     public int getCourseId() {

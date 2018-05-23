@@ -20,6 +20,9 @@ public class LeftAdapter extends BaseQuickAdapter<KnowledgeBean,BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, KnowledgeBean item) {
+        if (item.isSelect())
+            helper.getView(R.id.rl_item).setSelected(true);
+        else helper.getView(R.id.rl_item).setSelected(false);
         helper.setText(R.id.tv_category,item.getName());
     }
 }
