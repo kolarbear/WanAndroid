@@ -15,6 +15,7 @@ import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
+import com.kolarbear.wanandroid.ui.article.ArticleActivity;
 import com.kolarbear.wanandroid.utils.GlideImageLoader;
 import com.kolarbear.wanandroid.utils.Utils;
 import com.youth.banner.Banner;
@@ -35,7 +36,7 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends BaseFragment<HomePresenter> implements HomeContract.IHomeView ,SwipeRefreshLayout.OnRefreshListener
-, HomeAdapter.RequestLoadMoreListener{
+, HomeAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener{
 
 
     @BindView(R.id.articleList)
@@ -75,6 +76,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
          */
         articleList.setLayoutManager(new LinearLayoutManager(getContext()));
         articleList.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
         /**
          *  设置banner Header
          */
@@ -84,7 +86,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         adapter.setOnLoadMoreListener(this,articleList);
         refreshLayout.setOnRefreshListener(this);
 
-        presenter.example();
         presenter.loadBanner(); //加载banner数据
         presenter.loadHomeArticle();//加载文章列表
     }
@@ -121,5 +122,16 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     @Override
     public void showArticles(List<HomeArticle.DatasBean> datas, int type) {
         Utils.update(refreshLayout,adapter,datas,type);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        HomeArticle.DatasBean item = this.adapter.getItem(position);
+        ArticleActivity.startArticle(item.getId(),item.getTitle(),item.getAuthor(),item.getLink());
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
     }
 }

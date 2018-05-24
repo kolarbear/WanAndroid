@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
@@ -43,6 +45,8 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     private List<KnowledgeBean.ChildrenBean> childrens;
     private List<KnowledgeBean> knowledgeBean;
     private List<Integer> positions;
+    private LinearLayoutManager leftLayoutManager;
+
     @Override
     protected void initInject() {
         component.inject(this);
@@ -72,6 +76,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     }
 
     private void initRightList() {
+
         rightList.addItemDecoration(new StickDecoration(this));
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rightList.setLayoutManager(layoutManager);
@@ -85,28 +90,55 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+                if (move)
+                {
+                    move = false;
+                    int childCount = recyclerView.getChildCount();
+                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                    int n = mTopPosition - firstVisibleItemPosition;
+                    if (n<childCount)
+                    {
+                        View child = recyclerView.getChildAt(n);
+                        int top = child.getTop();
+                        recyclerView.scrollBy(0,top-40);
+                    }
+                }
+
                 int position = layoutManager.findFirstVisibleItemPosition();
                 for (int i = 0; i < positions.size(); i++) {
                     if (position==positions.get(i))
                     {
-                        for (int j = 0; j < knowledgeBean.size(); j++) {
-                            if (j==i)
-                            {
-                                knowledgeBean.get(j).setSelect(true);
-                            }else {
-                                knowledgeBean.get(j).setSelect(false);
-                            }
-                        }
-                        Utils.update(refreshLayout,leftAdapter,knowledgeBean,0);
+//                        leftList.scrollToPosition(i);
+//                        leftLayoutManager.scrollToPositionWithOffset(i,0);
+//                        leftLayoutManager.scrollToPosition(i);
+                        leftAdapter.chooseItem(i);
+//                        recyclerView.getChildAt(i).setFocusable(true);
+//                       leftAdapter.setNewData(knowledgeBean);
                     }
                 }
             }
         });
     }
 
+    private int mTopPosition;
+    private boolean move;
     private void initLeftList() {
-        leftList.setLayoutManager(new LinearLayoutManager(getContext()));
+//        ((SimpleItemAnimator)leftList.getItemAnimator()).setSupportsChangeAnimations(false);
+//        leftList.getItemAnimator().setChangeDuration(0);
+        leftLayoutManager = new LinearLayoutManager(getContext());
+        leftList.setLayoutManager(leftLayoutManager);
         leftList.setAdapter(leftAdapter);
+        leftAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                mTopPosition = positions.get(position);
+                leftAdapter.chooseItem(position);
+                rightList.scrollToPosition(mTopPosition);
+                move = true;
+            }
+        });
     }
 
     /**

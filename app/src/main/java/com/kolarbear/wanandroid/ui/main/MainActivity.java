@@ -76,7 +76,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void showMsg() {
-        ToastUtils.showShort("调到了吗？");
     }
 
     @Override

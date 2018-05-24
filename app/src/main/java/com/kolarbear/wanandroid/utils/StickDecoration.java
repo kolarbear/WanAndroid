@@ -58,14 +58,10 @@ public class StickDecoration extends RecyclerView.ItemDecoration {
                 continue;
             int bottom = child.getBottom();//获取item的bottom
             float tagBottom = Math.max(mDecorationHeight,child.getTop());
-                Log.e(TAG, "onDrawOver: "+bottom);
             if (adapterPosition+1<itemCount)//判断是否为最后一个
             {
                 String nextTag = mListener.getCurrentTag(adapterPosition + 1);
-                if (bottom==0)
-                {
-                    ToastUtils.showShort("不可见");
-                }
+
                 if (!TextUtils.equals(nextTag,curTag)&&bottom<tagBottom)//被顶起来的条件
                 {
                     tagBottom = bottom;

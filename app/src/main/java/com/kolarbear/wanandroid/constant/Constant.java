@@ -11,4 +11,14 @@ public interface Constant {
 
     int PAGE_SIZE = 20;
 
+    String CONSTANT_ID = "id";
+
+    String CONSTANT_AUTHOR = "author";
+
+    String CONSTANT_TITLE = "title";
+
+    String CONSTANT_URL = "url";
+
+
+
 }
