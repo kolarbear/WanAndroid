@@ -1,5 +1,6 @@
 package com.kolarbear.wanandroid.ui.knowledge;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +15,10 @@ import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 import com.kolarbear.wanandroid.utils.StickDecoration;
 import com.kolarbear.wanandroid.utils.Utils;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,7 +29,8 @@ import butterknife.BindView;
  * Created by Administrator on 2018/5/21.
  */
 
-public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implements KnowledgeContract.View ,StickDecoration.OnTagListener{
+public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implements KnowledgeContract.View
+       ,SwipeRefreshLayout.OnRefreshListener{
 
 
     @BindView(R.id.leftList)
@@ -39,13 +43,17 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     @Inject
     LeftAdapter leftAdapter;
 
+
     @Inject
-    RightAdapter rightAdapter;
+    RightStickAdapter rightStickAdapter;
 
     private List<KnowledgeBean.ChildrenBean> childrens;
     private List<KnowledgeBean> knowledgeBean;
     private List<Integer> positions;
+    private List<Integer> reversePositions;
+    private List<String> headers;
     private LinearLayoutManager leftLayoutManager;
+    private LinearLayoutManager rightManager;
 
     @Override
     protected void initInject() {
@@ -72,15 +80,18 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         initRightList();
         childrens = new ArrayList<>();
         positions = new ArrayList<>();
+        reversePositions = new ArrayList<>();
+        headers = new ArrayList<>();
+        refreshLayout.setOnRefreshListener(this);
         presenter.getKnowledgeTree();
     }
 
     private void initRightList() {
 
-        rightList.addItemDecoration(new StickDecoration(this));
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rightList.setLayoutManager(layoutManager);
-        rightList.setAdapter(rightAdapter);
+        rightManager = new LinearLayoutManager(getContext());
+        rightList.setLayoutManager(rightManager);
+        rightList.setAdapter(rightStickAdapter);
+        rightList.addItemDecoration(new StickyRecyclerHeadersDecoration(rightStickAdapter));
         rightList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -90,42 +101,67 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
+                Log.e(TAG, "onScrolled: "+dy);
                 if (move)
                 {
                     move = false;
                     int childCount = recyclerView.getChildCount();
-                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                    int firstVisibleItemPosition = rightManager.findFirstVisibleItemPosition();
                     int n = mTopPosition - firstVisibleItemPosition;
                     if (n<childCount)
                     {
                         View child = recyclerView.getChildAt(n);
                         int top = child.getTop();
-                        recyclerView.scrollBy(0,top-40);
+                        recyclerView.scrollBy(0,top-dip2px(getContext(),25));
                     }
+                }
+                if (!clickFromLeft)
+                {
+                    if (dy>0)
+                    {
+                        int position = rightManager.findFirstVisibleItemPosition();
+                        for (int i = 0; i < positions.size(); i++) {
+                            if (position==positions.get(i))
+                            {
+                                leftAdapter.chooseItem(i);
+                                //                            leftList.scrollToPosition(i+3);
+                                leftLayoutManager.scrollToPositionWithOffset(i,0);
+                            }
+                        }
+                    }else {
+                        int position = rightManager.findFirstVisibleItemPosition();
+                        for (int i = 0; i < reversePositions.size(); i++) {
+                            if (position==reversePositions.get(i))
+                            {
+                                leftAdapter.chooseItem(i);
+                                //                            leftList.scrollToPosition(i-5);
+                                leftLayoutManager.scrollToPositionWithOffset(i,0);
+                            }
+                        }
+                    }
+                }else {
+                    clickFromLeft = false;
                 }
 
-                int position = layoutManager.findFirstVisibleItemPosition();
-                for (int i = 0; i < positions.size(); i++) {
-                    if (position==positions.get(i))
-                    {
-//                        leftList.scrollToPosition(i);
-//                        leftLayoutManager.scrollToPositionWithOffset(i,0);
-//                        leftLayoutManager.scrollToPosition(i);
-                        leftAdapter.chooseItem(i);
-//                        recyclerView.getChildAt(i).setFocusable(true);
-//                       leftAdapter.setNewData(knowledgeBean);
-                    }
-                }
+
             }
         });
     }
-
+    /**
+     * 根据手机分辨率从dp转成px
+     *
+     * @param context
+     * @param dpValue
+     * @return
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
     private int mTopPosition;
     private boolean move;
+    private boolean clickFromLeft = false;
     private void initLeftList() {
-//        ((SimpleItemAnimator)leftList.getItemAnimator()).setSupportsChangeAnimations(false);
-//        leftList.getItemAnimator().setChangeDuration(0);
         leftLayoutManager = new LinearLayoutManager(getContext());
         leftList.setLayoutManager(leftLayoutManager);
         leftList.setAdapter(leftAdapter);
@@ -135,10 +171,28 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mTopPosition = positions.get(position);
                 leftAdapter.chooseItem(position);
-                rightList.scrollToPosition(mTopPosition);
-                move = true;
+                moveToPosition(mTopPosition);
+                clickFromLeft = true;
             }
         });
+    }
+
+    private void moveToPosition(int n)
+    {
+        int firstVisibleItemPosition = rightManager.findFirstVisibleItemPosition();
+        int lastVisibleItemPosition = rightManager.findLastVisibleItemPosition();
+        if (n <= firstVisibleItemPosition)
+        {
+            rightList.scrollToPosition(mTopPosition);
+        }else if (n <= lastVisibleItemPosition)
+        {
+            //当要置顶的项已经在屏幕上显示时
+            int top = rightList.getChildAt(n - firstVisibleItemPosition).getTop();
+            rightList.scrollBy(0,top-dip2px(getContext(),25));
+        }else {
+            rightList.scrollToPosition(mTopPosition);
+            move = true;
+        }
     }
 
     /**
@@ -151,18 +205,24 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         this.knowledgeBean = knowledgeBean;
         prepareRightData(knowledgeBean);
         prepareTagPosition();
+        prepareReversePosition();
         knowledgeBean.get(0).setSelect(true);
         Utils.update(refreshLayout,leftAdapter,knowledgeBean,0);
-        Utils.update(refreshLayout,rightAdapter,childrens,0);
+        rightStickAdapter.setHeaders(headers);
+        rightStickAdapter.setDatas(childrens);
     }
 
     private void prepareRightData(List<KnowledgeBean> knowledgeBean) {
         for (int i = 0; i < knowledgeBean.size(); i++) {
             List<KnowledgeBean.ChildrenBean> children = knowledgeBean.get(i).getChildren();
             childrens.addAll(children);
+            headers.add(knowledgeBean.get(i).getName());
         }
     }
 
+    /**
+     * 记录 每个tag 第一个位置
+     */
     private void prepareTagPosition()
     {
         for (int i = 0; i < childrens.size(); i++) {
@@ -181,16 +241,31 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         }
     }
 
-    @Override
-    public String getCurrentTag(int position) {
-        int parentChapterId = childrens.get(position).getParentChapterId();
-        String tag = null;
-        for (int i = 0; i < knowledgeBean.size(); i++) {
-            if (knowledgeBean.get(i).getId()==parentChapterId)
+    /**
+     * 记录每个tag 最后一个位置
+     */
+    private void prepareReversePosition()
+    {
+        for (int i = childrens.size(); i > 0; i--) {
+            if (i==childrens.size())
             {
-                tag = knowledgeBean.get(i).getName();
+                reversePositions.add(i);
+                continue;
+            }
+            if (i>1)
+            {
+                if (childrens.get(i).getParentChapterId()!=childrens.get(i-1).getParentChapterId())
+                {
+                    reversePositions.add(i-1);
+                }
             }
         }
-        return tag == null ? "" : tag;
+        Collections.reverse(reversePositions);
+    }
+
+
+    @Override
+    public void onRefresh() {
+        presenter.getKnowledgeTree();
     }
 }

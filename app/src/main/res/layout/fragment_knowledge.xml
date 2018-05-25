@@ -11,15 +11,13 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/leftList"
-        android:layout_weight="1"
         android:overScrollMode="never"
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rightList"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:overScrollMode="never"
-        android:layout_weight="2"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -38,9 +38,9 @@ public class LeftAdapter extends BaseQuickAdapter<KnowledgeBean,BaseViewHolder> 
             selectedPosition = position;
             getData().get(selectedPosition).setSelect(true);
             getData().get(prePosition).setSelect(false);
-            notifyItemChanged(selectedPosition);
-            notifyItemChanged(prePosition);
-//            notifyDataSetChanged();
+//            notifyItemChanged(selectedPosition);
+//            notifyItemChanged(prePosition);
+            notifyDataSetChanged();
         }
     }
 
