@@ -10,7 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
@@ -34,22 +37,40 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     protected void initView() {
-        toolbar.setTitle("玩Android");
-        toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(),R.color.colorWhite));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.layout_open, R.string.layout_close);
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        drawerToggle.setHomeAsUpIndicator(R.mipmap.ic_launcher);//改變圖標
-        drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
-        drawerLayout.addDrawerListener(drawerToggle);
-        navigationView.setNavigationItemSelectedListener(this);
+
+        setToolbar();
+        setDrawerLayout();
+
         if (findFragment(MainFragment.class) == null)
         {
             loadRootFragment(R.id.contentPanel,MainFragment.newInstance());
         }
 
 
+    }
+
+    private void setDrawerLayout() {
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.layout_open, R.string.layout_close);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.setHomeAsUpIndicator(R.mipmap.ic_launcher);//改變圖標
+        drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
+        drawerLayout.addDrawerListener(drawerToggle);
+        navigationView.setNavigationItemSelectedListener(this);
+        ImageView ivPortrait = navigationView.getHeaderView(0).findViewById(R.id.iv_portrait);
+        ivPortrait.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ARouter.getInstance().build("/login/LoginActivity")
+                            .navigation();
+                }
+        });
+    }
+
+    private void setToolbar() {
+        toolbar.setTitle("玩Android");
+        toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(),R.color.colorWhite));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

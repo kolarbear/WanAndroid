@@ -102,7 +102,8 @@ public class ClientModule {
     {
         OkHttpClient.Builder client = builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS).cache(cache)
-                .addInterceptor(interceptor);
+                .addInterceptor(interceptor)
+                ;
         if (interceptors!=null&&interceptors.length>0)
         {
             for (Interceptor i :interceptors) {

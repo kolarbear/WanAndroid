@@ -9,7 +9,10 @@ import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -50,5 +53,28 @@ public interface ApiService {
     @GET("article/list/{page}/json")
     Observable<BaseBean<CategoryBean>> categoryArticles(@Path("page") int page,
                                                         @Query("cid") int cid);
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return
+     */
+    @POST("user/login")
+    @FormUrlEncoded
+    Observable<BaseBean> login(@Field("username") String username,
+                               @Field("password") String password);
+
+    /**
+     * 注册
+     * @param username
+     * @param password
+     * @param repassword
+     * @return
+     */
+    @POST("user/register")
+    @FormUrlEncoded
+    Observable<BaseBean> register(@Field("username") String username,
+                                  @Field("password") String password,
+                                  @Field("repassword") String repassword);
 
 }

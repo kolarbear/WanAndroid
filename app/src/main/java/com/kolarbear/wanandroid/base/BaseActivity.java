@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.jaeger.library.StatusBarUtil;
+import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.app.App;
 import com.kolarbear.wanandroid.base.interfac.IView;
 import com.kolarbear.wanandroid.di.component.ActivityComponent;
@@ -45,6 +47,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
         mDelegate.onCreate(savedInstanceState);
         ARouter.getInstance().inject(this);
         setContentView(getLayoutId());
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
         bind = ButterKnife.bind(this);
         initActivityComponent();
         initInject();
@@ -58,14 +61,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatA
                 .activityModule(new ActivityModule(this))
                 .build();
     }
-
-    protected abstract void initData();
-
-    protected abstract void initView();
+    protected abstract int getLayoutId();
 
     protected abstract void initInject();
 
-    protected abstract int getLayoutId();
+    protected abstract void initView();
+
+    protected abstract void initData();
+
 
     @Override
     protected void onDestroy() {
