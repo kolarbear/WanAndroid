@@ -1,6 +1,7 @@
 package com.kolarbear.wanandroid.app;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.Utils;
@@ -35,9 +36,11 @@ public class App extends Application {
 
     private AppComponent appComponent;
 
+     public static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
         LeakCanary.install(this);//内存泄漏检测
         //初始化工具类
         Utils.init(this);
@@ -48,6 +51,12 @@ public class App extends Application {
         }
         initAppComponent();
         initFragmentation();
+    }
+
+
+    public static Context getContext()
+    {
+        return context;
     }
 
     private void initARouter() {

@@ -3,5 +3,5 @@
 
     >
 
-    <solid android:color="@color/colorWhite" />
+    <solid android:color="@color/colorPrimary" />
 </shape>

@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
-import com.kolarbear.wanandroid.utils.StickDecoration;
 import com.kolarbear.wanandroid.utils.Utils;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
@@ -43,9 +40,8 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     @Inject
     LeftAdapter leftAdapter;
 
-
     @Inject
-    RightStickAdapter rightStickAdapter;
+    RightAdapter rightAdapter;
 
     private List<KnowledgeBean.ChildrenBean> childrens;
     private List<KnowledgeBean> knowledgeBean;
@@ -90,8 +86,8 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
 
         rightManager = new LinearLayoutManager(getContext());
         rightList.setLayoutManager(rightManager);
-        rightList.setAdapter(rightStickAdapter);
-        rightList.addItemDecoration(new StickyRecyclerHeadersDecoration(rightStickAdapter));
+        rightList.setAdapter(rightAdapter);
+        rightList.addItemDecoration(new StickyRecyclerHeadersDecoration(rightAdapter));
         rightList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -101,7 +97,6 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.e(TAG, "onScrolled: "+dy);
                 if (move)
                 {
                     move = false;
@@ -112,7 +107,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
                     {
                         View child = recyclerView.getChildAt(n);
                         int top = child.getTop();
-                        recyclerView.scrollBy(0,top-dip2px(getContext(),25));
+                        recyclerView.smoothScrollBy(0,top-dip2px(getContext(),25));
                     }
                 }
                 if (!clickFromLeft)
@@ -171,8 +166,8 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mTopPosition = positions.get(position);
                 leftAdapter.chooseItem(position);
-                moveToPosition(mTopPosition);
                 clickFromLeft = true;
+                moveToPosition(mTopPosition);
             }
         });
     }
@@ -188,7 +183,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         {
             //当要置顶的项已经在屏幕上显示时
             int top = rightList.getChildAt(n - firstVisibleItemPosition).getTop();
-            rightList.scrollBy(0,top-dip2px(getContext(),25));
+            rightList.smoothScrollBy(0,top-dip2px(getContext(),25));
         }else {
             rightList.scrollToPosition(mTopPosition);
             move = true;
@@ -208,8 +203,8 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         prepareReversePosition();
         knowledgeBean.get(0).setSelect(true);
         Utils.update(refreshLayout,leftAdapter,knowledgeBean,0);
-        rightStickAdapter.setHeaders(headers);
-        rightStickAdapter.setDatas(childrens);
+        rightAdapter.setHeaders(headers);
+        rightAdapter.setDatas(childrens);
     }
 
     private void prepareRightData(List<KnowledgeBean> knowledgeBean) {

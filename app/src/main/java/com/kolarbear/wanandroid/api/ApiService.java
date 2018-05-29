@@ -3,6 +3,7 @@ package com.kolarbear.wanandroid.api;
 import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
+import com.kolarbear.wanandroid.bean.knowledge.CategoryBean;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  *  接口
@@ -43,5 +45,10 @@ public interface ApiService {
      */
     @GET("tree/json")
     Observable<BaseBean<List<KnowledgeBean>>> knowledgeTree();
+
+
+    @GET("article/list/{page}/json")
+    Observable<BaseBean<CategoryBean>> categoryArticles(@Path("page") int page,
+                                                        @Query("cid") int cid);
 
 }
