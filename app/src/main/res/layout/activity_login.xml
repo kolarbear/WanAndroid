@@ -1,9 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:padding="40dp"
+    android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
+    <ImageView
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/usernameLayout"
+        android:layout_marginBottom="32dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
 
-</LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameLayout"
+        app:hintTextAppearance="@style/FloatingStyle"
+        android:layout_above="@+id/passwordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/username"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textColor="@color/colorWhite"
+            android:hint="@string/username"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginRight="@dimen/dp_40"
+            android:textColorHint="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordLayout"
+        app:hintTextAppearance="@style/FloatingStyle"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/password"
+            android:hint="@string/password"
+            android:maxLines="1"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginRight="@dimen/dp_40"
+            android:textColorHint="@color/colorWhite"
+            android:inputType="textPassword"
+            android:textColor="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TableRow
+        android:id="@+id/buttonLayout"
+        android:layout_marginTop="@dimen/dp_40"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingRight="@dimen/dp_40"
+        android:layout_below="@+id/passwordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:id="@+id/btRegister"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/register"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/bt_login"
+            android:layout_height="match_parent"
+            />
+        <Button
+            android:id="@+id/btLogin"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="@string/login"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/bt_login"
+            android:layout_height="match_parent"
+            />
+    </TableRow>
+
+</RelativeLayout>

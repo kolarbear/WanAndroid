@@ -8,6 +8,7 @@
     android:layout_height="200dp">
 
     <ImageView
+        android:id="@+id/iv_portrait"
         android:src="@mipmap/ic_launcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

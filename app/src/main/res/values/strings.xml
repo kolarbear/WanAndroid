@@ -13,4 +13,8 @@
     <string name="menu_collect">收藏</string>
     <string name="menu_system_browser">用系统浏览器打开</string>
     <string name="share_article_url">%1$s分享【%2$s】：%3$s</string>
+    <string name="username">请输入用户名</string>
+    <string name="password">请输入密码</string>
+    <string name="register">注册</string>
+    <string name="login">登录</string>
 </resources>
