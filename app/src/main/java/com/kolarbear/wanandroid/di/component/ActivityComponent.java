@@ -1,5 +1,7 @@
 package com.kolarbear.wanandroid.di.component;
 
+import com.kolarbear.wanandroid.ui.category_articles.ArticleListActivity;
+import com.kolarbear.wanandroid.ui.login.LoginActivity;
 import com.kolarbear.wanandroid.ui.main.MainActivity;
 import com.kolarbear.wanandroid.di.module.ActivityModule;
 import com.kolarbear.wanandroid.di.scope.ActivityScope;
@@ -15,4 +17,8 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject(MainActivity activity);
+
+    void inject(LoginActivity activity);
+
+    void inject(ArticleListActivity activity);
 }

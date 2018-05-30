@@ -1,5 +1,6 @@
 package com.kolarbear.wanandroid.ui.main;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -12,12 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
 import com.kolarbear.wanandroid.ui.home.HomeFragment;
+import com.kolarbear.wanandroid.utils.UserController;
 
 import butterknife.BindView;
 
@@ -30,6 +33,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     DrawerLayout drawerLayout;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    private TextView tvLogin; //登录的用户
+    private TextView tvName; //登录的用户
+
     @Override
     protected void initData() {
         presenter.doSomething();
@@ -56,14 +62,37 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         drawerToggle.syncState();////show the default icon and sync the DrawerToggle state,如果你想改变图标的话，这句话要去掉。这个会使用默认的三杠图标
         drawerLayout.addDrawerListener(drawerToggle);
         navigationView.setNavigationItemSelectedListener(this);
-        ImageView ivPortrait = navigationView.getHeaderView(0).findViewById(R.id.iv_portrait);
-        ivPortrait.setOnClickListener(new View.OnClickListener() {
+//        ImageView ivPortrait = navigationView.getHeaderView(0).findViewById(R.id.iv_portrait);
+        tvLogin = navigationView.getHeaderView(0).findViewById(R.id.tv_login);
+        tvName = navigationView.getHeaderView(0).findViewById(R.id.tv_name);
+        tvLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!UserController.getInstance().isLogin())
                     ARouter.getInstance().build("/login/LoginActivity")
-                            .navigation();
+                            .navigation(MainActivity.this,2);
+                    else //退出登录;
+                    {
+                        UserController.getInstance().exit();
+                        tvName.setText("未登录");
+                        tvLogin.setText("点击登录");
+                    }
                 }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==2)
+        {
+            if (resultCode==1)
+            {
+                //登录成功
+                tvName.setText(data.getStringExtra("name"));
+                tvLogin.setText("退出登录");
+            }
+        }
     }
 
     private void setToolbar() {

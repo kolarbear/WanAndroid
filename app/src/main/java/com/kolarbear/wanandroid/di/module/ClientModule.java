@@ -1,7 +1,6 @@
 package com.kolarbear.wanandroid.di.module;
 
 
-import android.app.Application;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -11,6 +10,7 @@ import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.http.HttpGlobalHandler;
 import com.kolarbear.wanandroid.http.RequestInterceptor;
 import com.kolarbear.wanandroid.http.ResultJsonDeser;
+import com.kolarbear.wanandroid.utils.net.CookieManager;
 import com.kolarbear.wanandroid.utils.SpUtil;
 
 import java.io.File;
@@ -102,7 +102,8 @@ public class ClientModule {
     {
         OkHttpClient.Builder client = builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS).cache(cache)
-                .addInterceptor(interceptor)
+                .addNetworkInterceptor(interceptor)
+                .cookieJar(new CookieManager())
                 ;
         if (interceptors!=null&&interceptors.length>0)
         {

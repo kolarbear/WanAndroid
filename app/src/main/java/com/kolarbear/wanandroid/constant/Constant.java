@@ -19,6 +19,8 @@ public interface Constant {
 
     String CONSTANT_URL = "url";
 
+    String USER_NAME = "username";
+
 
 
 }

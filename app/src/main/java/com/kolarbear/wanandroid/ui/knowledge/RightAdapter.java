@@ -28,6 +28,7 @@ public class RightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<String> headers;
 
     private List<Integer> positions = new ArrayList<>();
+    OnItemClickListener listener;
     @Inject
     public RightAdapter() {
     }
@@ -78,6 +79,11 @@ public class RightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    public void setListener(OnItemClickListener listener)
+    {
+        this.listener = listener;
+    }
+
 
 
 
@@ -90,9 +96,16 @@ public class RightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ContentViewHolder contentHolder = (ContentViewHolder) holder;
             contentHolder.tv.setText(datas.get(position).getName());
+            contentHolder.tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null)
+                        listener.click(position);
+                }
+            });
     }
 
     @Override
@@ -136,5 +149,8 @@ public class RightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             tv = itemView.findViewById(R.id.tv_name);
         }
+    }
+    interface OnItemClickListener{
+        void click(int position);
     }
 }

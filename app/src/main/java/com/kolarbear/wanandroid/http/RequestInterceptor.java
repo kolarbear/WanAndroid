@@ -41,7 +41,7 @@ public class RequestInterceptor implements okhttp3.Interceptor{
         if (mHandler != null)//在请求服务器之前可以拿到request,做一些操作比如给request添加header,如果不做操作则返回参数中的request
             request = mHandler.beforeRequest(chain, request);
         //打印url信息
-        Timber.tag("Data")
+        Timber.tag("Request")
                 .w("Sending Data %s on %n Params --->  %s%n Connection ---> %s%n Headers ---> %s", request.url(), request.body() != null ? requestbuffer.readUtf8() : "null", chain
                         .connection(), request.headers());
 

@@ -5,6 +5,7 @@ import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
 import com.kolarbear.wanandroid.bean.knowledge.CategoryBean;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
+import com.kolarbear.wanandroid.bean.login.LoginBean;
 
 import java.util.List;
 
@@ -50,6 +51,12 @@ public interface ApiService {
     Observable<BaseBean<List<KnowledgeBean>>> knowledgeTree();
 
 
+    /**
+     * 该分类下的所有文章
+     * @param page
+     * @param cid
+     * @return
+     */
     @GET("article/list/{page}/json")
     Observable<BaseBean<CategoryBean>> categoryArticles(@Path("page") int page,
                                                         @Query("cid") int cid);
@@ -61,8 +68,8 @@ public interface ApiService {
      */
     @POST("user/login")
     @FormUrlEncoded
-    Observable<BaseBean> login(@Field("username") String username,
-                               @Field("password") String password);
+    Observable<BaseBean<LoginBean>> login(@Field("username") String username,
+                                          @Field("password") String password);
 
     /**
      * 注册

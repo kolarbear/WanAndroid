@@ -2,6 +2,7 @@ package com.kolarbear.wanandroid.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.Utils;
@@ -35,7 +36,7 @@ import timber.log.Timber;
 public class App extends Application {
 
     private AppComponent appComponent;
-
+    private static final String TAG = "App";
      public static Context context;
     @Override
     public void onCreate() {
@@ -51,6 +52,22 @@ public class App extends Application {
         }
         initAppComponent();
         initFragmentation();
+        initThreadExceptionHandler();
+    }
+
+    private void initThreadExceptionHandler() {
+        final Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                Log.e(TAG, "uncaughtException: ThreadId>"+t.getId()+"message>"+e.toString());
+                if (uncaughtExceptionHandler!=null)
+                {
+                    uncaughtExceptionHandler.uncaughtException(t, e);
+                }
+            }
+        };
+        Thread.setDefaultUncaughtExceptionHandler(handler);
     }
 
 

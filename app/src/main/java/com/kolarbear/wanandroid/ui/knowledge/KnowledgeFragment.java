@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
@@ -87,6 +88,15 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         rightManager = new LinearLayoutManager(getContext());
         rightList.setLayoutManager(rightManager);
         rightList.setAdapter(rightAdapter);
+        rightAdapter.setListener(new RightAdapter.OnItemClickListener() {
+            @Override
+            public void click(int position) {
+                ARouter.getInstance()
+                        .build("/category_articles/ArticleListActivity")
+                        .withInt("cid",childrens.get(position).getId())
+                        .navigation();
+            }
+        });
         rightList.addItemDecoration(new StickyRecyclerHeadersDecoration(rightAdapter));
         rightList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
