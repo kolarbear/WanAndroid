@@ -1,19 +1,17 @@
-package com.kolarbear.wanandroid.ui.category_articles;
+package com.kolarbear.wanandroid.ui.collectlist;
 
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
 import com.kolarbear.wanandroid.bean.BaseBean;
-import com.kolarbear.wanandroid.bean.knowledge.CategoryBean;
+import com.kolarbear.wanandroid.bean.collect.CollectArticle;
 import com.kolarbear.wanandroid.ui.article.ArticleActivity;
 import com.kolarbear.wanandroid.utils.Utils;
 
@@ -24,12 +22,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Created by kolarbear on 2018/5/26.
- * Description: 某个分类下的所有文章
+ * 我的收藏列表
+ * Created by Administrator on 2018/5/31.
  */
-@Route(path = "/category_articles/ArticleListActivity")
-public class ArticleListActivity extends BaseActivity<ArticleListPresenter> implements ArticleListContract.View
-,SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener{
+@Route(path = "/collectlist/CollectList")
+public class CollectListActivity extends BaseActivity<CollectListPresenter>
+        implements CollectListContract.View,SwipeRefreshLayout.OnRefreshListener
+        ,BaseQuickAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -38,20 +37,9 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
 
-    @Autowired
-    int cid;
-
-    @Autowired
-    String title;
-
     @Inject
-    ArticleListAdapter adapter;
-    private List<CategoryBean.DatasBean> datas;
-
-    @Override
-    protected void initInject() {
-        component.inject(this);
-    }
+    CollectListAdapter adapter;
+    private List<CollectArticle.DatasBean> datas;
 
     @Override
     protected int getLayoutId() {
@@ -59,8 +47,8 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
     }
 
     @Override
-    protected void initData() {
-        presenter.articleList(cid);
+    protected void initInject() {
+        component.inject(this);
     }
 
     @Override
@@ -70,7 +58,7 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
     }
 
     private void initToolbar() {
-        toolbar.setTitle(title);
+        toolbar.setTitle("我喜欢的");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -82,7 +70,6 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
     }
 
     private void initRecyclerview() {
-
         refreshLayout.setOnRefreshListener(this);
         adapter.setOnLoadMoreListener(this,recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -91,25 +78,31 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
     }
 
     @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        CategoryBean.DatasBean datasBean = datas.get(position);
-        ArticleActivity.startArticle(datasBean.getId(),datasBean.getTitle(),datasBean.getAuthor(),datasBean.getLink());
-    }
-
-    @Override
-    public void showArticleList(BaseBean<CategoryBean> bean,int type) {
-        datas = bean.data.getDatas();
-        Utils.update(refreshLayout,adapter, datas,type);
-    }
-
-    @Override
     public void onRefresh() {
-        presenter.refresh(cid);
+        presenter.refresh();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        CollectArticle.DatasBean datasBean = datas.get(position);
+        ArticleActivity.startArticle(datasBean.getId(),datasBean.getTitle(),datasBean.getAuthor(),datasBean.getLink());
+
     }
 
     @Override
     public void onLoadMoreRequested() {
-        presenter.more(cid);
+        presenter.more();
+    }
+
+    @Override
+    protected void initData() {
+        presenter.refresh();
+    }
+
+    @Override
+    public void showList(BaseBean<CollectArticle> t,int type) {
+        datas = t.data.getDatas();
+        Utils.update(refreshLayout,adapter, datas,type);
     }
 
     @Override

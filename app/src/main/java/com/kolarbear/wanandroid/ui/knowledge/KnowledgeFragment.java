@@ -1,6 +1,8 @@
 package com.kolarbear.wanandroid.ui.knowledge;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
+import com.kolarbear.wanandroid.ui.category_articles.ArticleListActivity;
 import com.kolarbear.wanandroid.utils.Utils;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
@@ -94,7 +97,9 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
                 ARouter.getInstance()
                         .build("/category_articles/ArticleListActivity")
                         .withInt("cid",childrens.get(position).getId())
+                        .withString("title",childrens.get(position).getName())
                         .navigation();
+//                startActivity(new Intent(getContext(), ArticleListActivity.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             }
         });
         rightList.addItemDecoration(new StickyRecyclerHeadersDecoration(rightAdapter));

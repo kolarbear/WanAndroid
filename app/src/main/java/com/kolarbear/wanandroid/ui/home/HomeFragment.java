@@ -1,18 +1,17 @@
 package com.kolarbear.wanandroid.ui.home;
 
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
+import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
 import com.kolarbear.wanandroid.ui.article.ArticleActivity;
@@ -27,8 +26,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 首页
@@ -36,7 +33,8 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends BaseFragment<HomePresenter> implements HomeContract.IHomeView ,SwipeRefreshLayout.OnRefreshListener
-, HomeAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener{
+, HomeAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener
+        ,BaseQuickAdapter.OnItemChildClickListener {
 
 
     @BindView(R.id.articleList)
@@ -46,8 +44,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Inject
     HomeAdapter adapter;
+
     private Banner banner;
 
+    private int collectPosition;
     @Override
     protected void initInject() {
         component.inject(this);
@@ -77,6 +77,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         articleList.setLayoutManager(new LinearLayoutManager(getContext()));
         articleList.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
+        adapter.setOnItemChildClickListener(this);
         /**
          *  设置banner Header
          */
@@ -132,6 +133,25 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        collectPosition = position;
+        if (!this.adapter.getItem(position).isCollect())
+        {
+            presenter.collect(this.adapter.getItem(position).getId());
+        }else {
+            presenter.cancelCollect(this.adapter.getItem(position).getId());
+        }
+            ToastUtils.showShort("id>"+this.adapter.getItem(position).getId());
+    }
 
+    @Override
+    public void collect(BaseBean result) {
+        adapter.getItem(collectPosition).setCollect(true);
+        adapter.setData(collectPosition,adapter.getItem(collectPosition));
+    }
+
+    @Override
+    public void cancelCollect(BaseBean result) {
+        adapter.getItem(collectPosition).setCollect(false);
+        adapter.setData(collectPosition,adapter.getItem(collectPosition));
     }
 }

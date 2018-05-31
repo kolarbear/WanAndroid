@@ -1,6 +1,7 @@
 package com.kolarbear.wanandroid.api;
 
 import com.kolarbear.wanandroid.bean.BaseBean;
+import com.kolarbear.wanandroid.bean.collect.CollectArticle;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
 import com.kolarbear.wanandroid.bean.knowledge.CategoryBean;
@@ -83,5 +84,34 @@ public interface ApiService {
     Observable<BaseBean> register(@Field("username") String username,
                                   @Field("password") String password,
                                   @Field("repassword") String repassword);
+
+
+    /**
+     * 收藏文章列表
+     * http://www.wanandroid.com/lg/collect/list/0/json
+        方法：GET
+        参数： 页码：拼接在链接中，从0开始。
+     * @param page
+     * @return
+     */
+    @GET("lg/collect/list/{page}/json")
+    Observable<BaseBean<CollectArticle>> collectList(@Path("page") int page);
+
+
+    /**
+     * 收藏文章
+     * @param id
+     * @return
+     */
+    @POST("lg/collect/{id}/json")
+    Observable<BaseBean> collect(@Path("id") int id);
+
+    /**
+     * 取消收藏文章
+     * @param id
+     * @return
+     */
+    @POST("lg/uncollect_originId/{id}/json")
+    Observable<BaseBean> cancelCollect(@Path("id") int id);
 
 }

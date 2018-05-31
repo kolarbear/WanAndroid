@@ -1,6 +1,7 @@
 package com.kolarbear.wanandroid.di.component;
 
 import com.kolarbear.wanandroid.ui.category_articles.ArticleListActivity;
+import com.kolarbear.wanandroid.ui.collectlist.CollectListActivity;
 import com.kolarbear.wanandroid.ui.login.LoginActivity;
 import com.kolarbear.wanandroid.ui.main.MainActivity;
 import com.kolarbear.wanandroid.di.module.ActivityModule;
@@ -21,4 +22,6 @@ public interface ActivityComponent {
     void inject(LoginActivity activity);
 
     void inject(ArticleListActivity activity);
+
+    void inject(CollectListActivity activity);
 }

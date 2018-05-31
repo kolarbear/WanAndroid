@@ -20,9 +20,11 @@ public class HomeAdapter extends BaseQuickAdapter<HomeArticle.DatasBean,BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, HomeArticle.DatasBean item) {
+        helper.addOnClickListener(R.id.iv_collect);
         helper.setText(R.id.tv_author_name,item.getAuthor())
                 .setText(R.id.tv_date,item.getNiceDate())
                 .setText(R.id.tv_article_category,item.getChapterName())
                 .setText(R.id.tv_article_title,item.getTitle());
+        helper.setImageResource(R.id.iv_collect,item.isCollect() ? R.drawable.ic_action_like : R.drawable.ic_action_no_like);
     }
 }

@@ -65,6 +65,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 //        ImageView ivPortrait = navigationView.getHeaderView(0).findViewById(R.id.iv_portrait);
         tvLogin = navigationView.getHeaderView(0).findViewById(R.id.tv_login);
         tvName = navigationView.getHeaderView(0).findViewById(R.id.tv_name);
+        if (UserController.getInstance().isLogin())
+        {
+            tvLogin.setText("退出登录");
+            tvName.setText(UserController.getInstance().getUser());
+        }
         tvLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -164,8 +169,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         switch (itemId)
         {
             case R.id.nav_like:
-                ToastUtils.showShort("我喜欢");
-                drawerLayout.closeDrawer(GravityCompat.START);
+                if (!UserController.getInstance().isLogin())
+                {
+                    ToastUtils.showShort("请先登录");
+                }else {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    ARouter.getInstance().build("/collectlist/CollectList")
+                            .navigation();
+                }
                 break;
             case R.id.nav_about:
                 ToastUtils.showShort("关于我");
