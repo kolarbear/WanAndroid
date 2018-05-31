@@ -122,7 +122,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
                     {
                         View child = recyclerView.getChildAt(n);
                         int top = child.getTop();
-                        recyclerView.smoothScrollBy(0,top-dip2px(getContext(),25));
+                        recyclerView.scrollBy(0,top-dip2px(getContext(),25));
                     }
                 }
                 if (!clickFromLeft)
@@ -198,7 +198,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         {
             //当要置顶的项已经在屏幕上显示时
             int top = rightList.getChildAt(n - firstVisibleItemPosition).getTop();
-            rightList.smoothScrollBy(0,top-dip2px(getContext(),25));
+            rightList.scrollBy(0,top-dip2px(getContext(),25));
         }else {
             rightList.scrollToPosition(mTopPosition);
             move = true;

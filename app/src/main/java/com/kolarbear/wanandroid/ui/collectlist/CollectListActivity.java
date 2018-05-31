@@ -28,7 +28,8 @@ import butterknife.BindView;
 @Route(path = "/collectlist/CollectList")
 public class CollectListActivity extends BaseActivity<CollectListPresenter>
         implements CollectListContract.View,SwipeRefreshLayout.OnRefreshListener
-        ,BaseQuickAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener{
+        ,BaseQuickAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener
+        ,BaseQuickAdapter.OnItemChildClickListener{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -75,6 +76,7 @@ public class CollectListActivity extends BaseActivity<CollectListPresenter>
         recyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
+        adapter.setOnItemChildClickListener(this);
     }
 
     @Override
@@ -87,6 +89,12 @@ public class CollectListActivity extends BaseActivity<CollectListPresenter>
         CollectArticle.DatasBean datasBean = datas.get(position);
         ArticleActivity.startArticle(datasBean.getId(),datasBean.getTitle(),datasBean.getAuthor(),datasBean.getLink());
 
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        presenter.cancelCollect(this.adapter.getItem(position).getOriginId());
+        adapter.remove(position);
     }
 
     @Override

@@ -28,5 +28,8 @@ public class CollectListAdapter extends BaseQuickAdapter<CollectArticle.DatasBea
                 .setText(R.id.tv_date,item.getNiceDate())
                 .setText(R.id.tv_article_category,item.getChapterName())
                 .setText(R.id.tv_article_title,item.getTitle());
+        helper.addOnClickListener(R.id.iv_collect);
+        helper.setImageResource(R.id.iv_collect, R.drawable.ic_action_like);
+
     }
 }
