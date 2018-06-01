@@ -6,6 +6,7 @@ import com.kolarbear.wanandroid.ui.login.LoginActivity;
 import com.kolarbear.wanandroid.ui.main.MainActivity;
 import com.kolarbear.wanandroid.di.module.ActivityModule;
 import com.kolarbear.wanandroid.di.scope.ActivityScope;
+import com.kolarbear.wanandroid.ui.search.SearchActivity;
 
 import dagger.Component;
 
@@ -24,4 +25,6 @@ public interface ActivityComponent {
     void inject(ArticleListActivity activity);
 
     void inject(CollectListActivity activity);
+
+    void inject(SearchActivity activity);
 }

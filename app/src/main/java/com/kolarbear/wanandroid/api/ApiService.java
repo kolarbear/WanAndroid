@@ -4,9 +4,12 @@ import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.bean.collect.CollectArticle;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
+import com.kolarbear.wanandroid.bean.hot.HotBean;
+import com.kolarbear.wanandroid.bean.hot.WebsiteBean;
 import com.kolarbear.wanandroid.bean.knowledge.CategoryBean;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 import com.kolarbear.wanandroid.bean.login.LoginBean;
+import com.kolarbear.wanandroid.bean.search.SearchResult;
 
 import java.util.List;
 
@@ -113,5 +116,30 @@ public interface ApiService {
      */
     @POST("lg/uncollect_originId/{id}/json")
     Observable<BaseBean> cancelCollect(@Path("id") int id);
+
+
+    /**
+     * 热词列表
+     * @return
+     */
+    @GET("hotkey/json")
+    Observable<BaseBean<List<HotBean>>> hotWords();
+
+    /**
+     * 常用网站
+     * @return
+     */
+    @GET("friend/json")
+    Observable<BaseBean<List<WebsiteBean>>> commonSites();
+
+    /**
+     * 搜索关键字
+     * @param page
+     * @param k
+     * @return
+     */
+    @POST("article/query/{page}/json")
+    @FormUrlEncoded
+    Observable<BaseBean<SearchResult>> searchK(@Path("page") int page, @Field("k") String k);
 
 }

@@ -20,9 +20,11 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
 import com.kolarbear.wanandroid.ui.home.HomeFragment;
+import com.kolarbear.wanandroid.ui.hot.HotFragment;
 import com.kolarbear.wanandroid.utils.UserController;
 
 import butterknife.BindView;
+import me.yokeyword.fragmentation.ISupportFragment;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView, NavigationView.OnNavigationItemSelectedListener {
 
@@ -119,7 +121,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         switch (item.getItemId())
         {
             case R.id.menuHot:
-                ToastUtils.showShort("热点");
+//                ToastUtils.showShort("热点");
+                MainFragment topFragment = (MainFragment) getTopFragment();
+                topFragment.startHot();
                 break;
             case R.id.menuSearch:
                 ToastUtils.showShort("搜索");

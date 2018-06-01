@@ -1,6 +1,7 @@
 package com.kolarbear.wanandroid.ui.home;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 首页
@@ -41,6 +43,9 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     RecyclerView articleList;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+
+    @BindView(R.id.floatbar)
+    FloatingActionButton fab;
 
     @Inject
     HomeAdapter adapter;
@@ -74,7 +79,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         /**
          * 设置Recyclerview
          */
-        articleList.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        articleList.setLayoutManager(manager);
         articleList.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         adapter.setOnItemChildClickListener(this);
@@ -89,6 +95,11 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
         presenter.loadBanner(); //加载banner数据
         presenter.loadHomeArticle();//加载文章列表
+    }
+    @OnClick(R.id.floatbar)
+    public void onClick(View view)
+    {
+        articleList.scrollToPosition(0);
     }
 
     /**
@@ -140,7 +151,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         }else {
             presenter.cancelCollect(this.adapter.getItem(position).getId());
         }
-            ToastUtils.showShort("id>"+this.adapter.getItem(position).getId());
     }
 
     @Override

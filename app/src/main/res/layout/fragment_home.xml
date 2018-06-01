@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,5 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatbar"
+        app:fabSize="mini"
+        android:elevation="@dimen/dp_10"
+        android:src="@drawable/ic_float_up"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_40"
+        android:layout_width="wrap_content"
+        app:layout_behavior=".widget.ShowHideBehavior"
+        app:backgroundTint="@color/colorPrimary"
+        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

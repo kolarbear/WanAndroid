@@ -1,10 +1,15 @@
 package com.kolarbear.wanandroid.utils;
 
+import android.graphics.Color;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.constant.Constant;
 
+import java.security.SecureRandom;
 import java.util.List;
 
 /**
@@ -42,4 +47,17 @@ public class Utils {
             adapter.loadMoreComplete();
         }
     }
+
+    /**
+     * 获取随机颜色
+     * @return
+     */
+    public static int getRandomColor() {
+        SecureRandom rgen = new SecureRandom();
+        return Color.HSVToColor(150, new float[]{
+                rgen.nextInt(359), 1, 1
+        });
+    }
+
+
 }

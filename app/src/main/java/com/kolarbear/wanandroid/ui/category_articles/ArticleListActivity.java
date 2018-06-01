@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
@@ -29,7 +30,7 @@ import butterknife.BindView;
  */
 @Route(path = "/category_articles/ArticleListActivity")
 public class ArticleListActivity extends BaseActivity<ArticleListPresenter> implements ArticleListContract.View
-,SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener{
+,SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener,BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -46,7 +47,10 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
 
     @Inject
     ArticleListAdapter adapter;
+
     private List<CategoryBean.DatasBean> datas;
+
+    private int collectPosition;
 
     @Override
     protected void initInject() {
@@ -88,12 +92,24 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
         recyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
+        adapter.setOnItemChildClickListener(this);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         CategoryBean.DatasBean datasBean = datas.get(position);
         ArticleActivity.startArticle(datasBean.getId(),datasBean.getTitle(),datasBean.getAuthor(),datasBean.getLink());
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        collectPosition = position;
+        if (this.adapter.getItem(position).isCollect())
+        {
+            presenter.cancelCollect(this.adapter.getItem(position).getId());
+        }else {
+            presenter.collect(this.adapter.getItem(position).getId());
+        }
     }
 
     @Override
@@ -114,11 +130,17 @@ public class ArticleListActivity extends BaseActivity<ArticleListPresenter> impl
 
     @Override
     public void collect(BaseBean result) {
-
+        adapter.getItem(collectPosition).setCollect(true);
+        adapter.setData(collectPosition,adapter.getItem(collectPosition));
+        ToastUtils.showShort(getResources().getString(R.string.collect_success));
     }
 
     @Override
     public void cancelCollect(BaseBean result) {
-
+        adapter.getItem(collectPosition).setCollect(true);
+        adapter.setData(collectPosition,adapter.getItem(collectPosition));
+        ToastUtils.showShort(getResources().getString(R.string.cancel_collect_success));
     }
+
+
 }
