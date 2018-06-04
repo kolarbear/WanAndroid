@@ -100,6 +100,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     public void onClick(View view)
     {
         articleList.scrollToPosition(0);
+//        fab.hide();
     }
 
     /**

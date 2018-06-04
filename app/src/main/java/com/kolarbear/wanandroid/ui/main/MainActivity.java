@@ -1,9 +1,13 @@
 package com.kolarbear.wanandroid.ui.main;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,10 +41,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     NavigationView navigationView;
     private TextView tvLogin; //登录的用户
     private TextView tvName; //登录的用户
+    private LoginBroadcastReceiver receiver;
 
     @Override
     protected void initData() {
         presenter.doSomething();
+        //注册广播接收者
+        LocalBroadcastManager instance = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter("loginSuccess");
+        receiver = new LoginBroadcastReceiver();
+        instance.registerReceiver(receiver,intentFilter);
     }
 
     @Override
@@ -95,9 +105,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         {
             if (resultCode==1)
             {
-                //登录成功
-                tvName.setText(data.getStringExtra("name"));
-                tvLogin.setText("退出登录");
+
             }
         }
     }
@@ -194,6 +202,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void setToolbarText(String text)
     {
         toolbar.setTitle(text);
+    }
+
+
+    class LoginBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("loginSuccess"))
+            {
+                String name = intent.getStringExtra("name");
+//                ToastUtils.showShort("MainActivity receive Login Success");
+                //登录成功
+                tvName.setText(name);
+                tvLogin.setText("退出登录");
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 }
 

@@ -1,5 +1,7 @@
 package com.kolarbear.wanandroid.ui.search;
 
+import android.util.Log;
+
 import com.kolarbear.wanandroid.api.ApiResult;
 import com.kolarbear.wanandroid.base.BasePresenter;
 import com.kolarbear.wanandroid.base.interfac.IView;
@@ -36,7 +38,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.View> {
 
                     @Override
                     public void onFail(Throwable e) {
-
+                        Log.e("SearchPresenter", "onFail: "+e.toString());
                     }
                 });
     }

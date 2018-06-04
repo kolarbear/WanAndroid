@@ -2,6 +2,7 @@ package com.kolarbear.wanandroid.ui.login;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.EditText;
 
@@ -59,7 +60,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         {
             ToastUtils.showShort("登录成功");
             UserController.getInstance().setUser(result.data.getUsername());
-            setResult(1,getIntent().putExtra("name",result.data.getUsername()));
+            Intent loginSuccess = new Intent("loginSuccess");
+            loginSuccess.putExtra("name",result.data.getUsername());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(loginSuccess);
+//            setResult(1,getIntent().putExtra("name",result.data.getUsername()));
             finish();
         }else {
             ToastUtils.showShort(result.errorMsg);
