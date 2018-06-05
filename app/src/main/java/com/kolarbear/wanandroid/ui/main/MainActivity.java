@@ -134,7 +134,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 topFragment.startHot();
                 break;
             case R.id.menuSearch:
-                ToastUtils.showShort("搜索");
+                ARouter.getInstance()
+                        .build("/search/SearchActivity")
+                        .navigation();
                 break;
         }
 
@@ -191,7 +193,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 }
                 break;
             case R.id.nav_about:
-                ToastUtils.showShort("关于我");
+//                ToastUtils.showShort("关于我");
+                ARouter.getInstance()
+                        .build("/about/AboutActivity")
+                        .navigation();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
         }

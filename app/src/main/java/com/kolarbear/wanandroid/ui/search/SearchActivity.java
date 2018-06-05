@@ -50,6 +50,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     SearchAdapter adapter;
 
     List<SearchResult.DatasBean> results;
+    private SearchView searchView;
 
     @Override
     protected int getLayoutId() {
@@ -73,6 +74,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         recyclerview.setAdapter(adapter);
         adapter.setOnLoadMoreListener(this,recyclerview);
         refreshLayout.setOnRefreshListener(this);
+        adapter.setEmptyView(R.layout.activity_search_empty);
     }
 
     private void initToolbar() {
@@ -91,11 +93,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu,menu);
         MenuItem item = menu.findItem(R.id.search_id);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 presenter.refresh(query);
+                k = query;
                 KeyboardUtils.hideSoftInput(SearchActivity.this);
                 return true;
             }
@@ -105,6 +108,10 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                 return false;
             }
         });
+        if (TextUtils.isEmpty(k))
+        {
+            searchView.setIconified(false);
+        }
         return true;
     }
 
@@ -126,6 +133,16 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         if (!TextUtils.isEmpty(k))
         {
             presenter.search(k);
+            toolbar.setTitle(k);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(k))
+        {
+            toolbar.setTitle(k);
         }
     }
 
