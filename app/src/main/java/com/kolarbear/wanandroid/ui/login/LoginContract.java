@@ -12,6 +12,6 @@ public interface LoginContract {
 
     interface View extends IView{
         void loginResult(BaseBean<LoginBean> result);
-        void registerResult(BaseBean result);
+        void registerResult(BaseBean<LoginBean> result);
     }
 }

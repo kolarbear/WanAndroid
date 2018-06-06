@@ -28,6 +28,7 @@ public class MainFragment extends BaseFragment implements BottomNavigationView.O
     private ISupportFragment[] mFragments = new ISupportFragment[3];
     public static final int FIRST = 0;
     public static final int SECOND = 1;
+    public static final int THIRD = 2;
     private int index = 0;
     public static MainFragment newInstance() {
 
@@ -64,14 +65,14 @@ public class MainFragment extends BaseFragment implements BottomNavigationView.O
             loadMultipleRootFragment(R.id.fl_tab_container, FIRST,
                     mFragments[FIRST],
                     mFragments[SECOND],
-                    mFragments[2]);
+                    mFragments[THIRD]);
         }else {
             // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
 
             // 这里我们需要拿到mFragments的引用,也可以通过getChildFragmentManager.findFragmentByTag自行进行判断查找(效率更高些),用下面的方法查找更方便些
             mFragments[FIRST] = findChildFragment(HomeFragment.class);
             mFragments[SECOND] = findChildFragment(KnowledgeFragment.class);
-            mFragments[2] = findChildFragment(HotFragment.class);
+            mFragments[THIRD] = findChildFragment(HotFragment.class);
         }
     }
     public void startHot()

@@ -58,21 +58,31 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void loginResult(BaseBean<LoginBean> result) {
         if (result.errorCode==0)
         {
-            ToastUtils.showShort("登录成功");
-            UserController.getInstance().setUser(result.data.getUsername());
-            Intent loginSuccess = new Intent("loginSuccess");
-            loginSuccess.putExtra("name",result.data.getUsername());
-            LocalBroadcastManager.getInstance(this).sendBroadcast(loginSuccess);
-//            setResult(1,getIntent().putExtra("name",result.data.getUsername()));
-            finish();
+            success(result.data);
         }else {
             ToastUtils.showShort(result.errorMsg);
         }
     }
 
     @Override
-    public void registerResult(BaseBean result) {
+    public void registerResult(BaseBean<LoginBean> result) {
+        if (result.errorCode==0)
+        {
+            success(result.data);
+        }else {
+            ToastUtils.showShort(result.errorMsg);
+        }
+    }
 
+    private void success(LoginBean result)
+    {
+        ToastUtils.showShort("登录成功");
+        UserController.getInstance().setUser(result.getUsername());
+        Intent loginSuccess = new Intent("loginSuccess");
+        loginSuccess.putExtra("name",result.getUsername());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(loginSuccess);
+//            setResult(1,getIntent().putExtra("name",result.data.getUsername()));
+        finish();
     }
 
     @OnClick({R.id.btRegister, R.id.btLogin})

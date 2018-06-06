@@ -3,6 +3,7 @@ package com.kolarbear.wanandroid.ui.login;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.kolarbear.wanandroid.api.ApiResult;
 import com.kolarbear.wanandroid.base.BasePresenter;
 import com.kolarbear.wanandroid.base.interfac.IView;
 import com.kolarbear.wanandroid.bean.BaseBean;
@@ -11,7 +12,9 @@ import com.kolarbear.wanandroid.utils.RxScheduler;
 
 import javax.inject.Inject;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by Administrator on 2018/5/28.
@@ -69,13 +72,40 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> {
         }
     }
 
-    public void register(String username,String password){
+    /**
+     * 注册成功后自动登录
+     * @param username
+     * @param password
+     */
+    public void register(final String username, final String password){
         if (isLegal(username,password))
         {
             service.register(username,password,password)
-                    .compose(getView().<BaseBean>bindToLife())
-                    .compose(RxScheduler.<BaseBean>applySchedulers())
-                    .subscribe(new Consumer<BaseBean>() {
+                    .flatMap(new Function<BaseBean, ObservableSource<BaseBean<LoginBean>>>() {
+                        @Override
+                        public ObservableSource<BaseBean<LoginBean>> apply(BaseBean baseBean) throws Exception {
+                            if (baseBean.errorCode==0)
+                            return service.login(username,password);
+                            else ToastUtils.showShort(baseBean.errorMsg);
+                            return null;
+                        }
+                    })
+                    .compose(getView().<BaseBean<LoginBean>>bindToLife())
+                    .compose(RxScheduler.<BaseBean<LoginBean>>applySchedulers())
+                    .subscribe(new ApiResult<LoginBean>() {
+                        @Override
+                        public void onSuccess(BaseBean<LoginBean> t) {
+                            getView().registerResult(t);
+                        }
+
+                        @Override
+                        public void onFail(Throwable e) {
+
+                        }
+                    });
+                   /* .compose(getView().<BaseBean<LoginBean>>bindToLife())
+                    .compose(RxScheduler.<BaseBean<LoginBean>>applySchedulers())
+                    .subscribe(new Consumer<BaseBean<LoginBean>>() {
                         @Override
                         public void accept(BaseBean baseBean) throws Exception {
                             getView().registerResult(baseBean);
@@ -85,7 +115,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> {
                         public void accept(Throwable throwable) throws Exception {
 
                         }
-                    });
+                    });*/
         }
     }
 }

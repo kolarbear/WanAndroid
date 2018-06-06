@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,11 +15,13 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
 import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.bean.search.SearchResult;
+import com.kolarbear.wanandroid.ui.article.ArticleActivity;
 import com.kolarbear.wanandroid.utils.Utils;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ import butterknife.BindView;
  */
 @Route(path = "/search/SearchActivity")
 public class SearchActivity extends BaseActivity<SearchPresenter> implements SearchContract.View,
-        SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+        SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -51,7 +54,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     List<SearchResult.DatasBean> results;
     private SearchView searchView;
-
+    private int position;
+    private static final String TAG = "SearchActivity";
     @Override
     protected int getLayoutId() {
         return R.layout.activity_article_list;
@@ -75,18 +79,14 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         adapter.setOnLoadMoreListener(this,recyclerview);
         refreshLayout.setOnRefreshListener(this);
         adapter.setEmptyView(R.layout.activity_search_empty);
+        adapter.setOnItemChildClickListener(this);
+        adapter.setOnItemClickListener(this);
     }
 
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
     }
 
     @Override
@@ -148,12 +148,22 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     public void collect(BaseBean result) {
-
+        if (result.errorCode==0)
+        {
+            this.adapter.getItem(position).setCollect(true);
+            adapter.notifyItemChanged(position);
+            ToastUtils.showShort("收藏成功");
+        }
     }
 
     @Override
     public void cancelCollect(BaseBean result) {
-
+        if (result.errorCode==0)
+        {
+            this.adapter.getItem(position).setCollect(false);
+            adapter.notifyItemChanged(position);
+            ToastUtils.showShort("取消收藏成功");
+        }
     }
 
     @Override
@@ -169,5 +179,28 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     public void onLoadMoreRequested() {
         presenter.more(k);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        this.position = position;
+        if (this.adapter.getItem(position).isCollect())
+        {
+            presenter.cancelCollect(this.adapter.getItem(position).getId());
+        }else {
+            presenter.collect(this.adapter.getItem(position).getId());
+        }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        SearchResult.DatasBean item = this.adapter.getItem(position);
+        Log.e(TAG, "onItemClick: id>"+item.getId()+"title>"+item.getTitle()
+        +"author>"+item.getAuthor()+"link>"+item.getLink());
+        ArticleActivity
+                .startArticle(item.getId()
+                ,item.getTitle()
+                ,item.getAuthor()
+                ,item.getLink());
     }
 }

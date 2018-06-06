@@ -142,4 +142,17 @@ public interface ApiService {
     @FormUrlEncoded
     Observable<BaseBean<SearchResult>> searchK(@Path("page") int page, @Field("k") String k);
 
+    /**
+     * 收藏站外文章
+     * @param title
+     * @param author
+     * @param link
+     * @return
+     */
+    @POST("lg/collect/add/json")
+    @FormUrlEncoded
+    Observable<BaseBean> collectOutsideArticle(@Field("title")String title,
+                                               @Field("author")String author,
+                                               @Field("link")String link);
+
 }

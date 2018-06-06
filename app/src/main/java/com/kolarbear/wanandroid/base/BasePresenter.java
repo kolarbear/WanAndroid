@@ -1,6 +1,7 @@
 package com.kolarbear.wanandroid.base;
 
 import com.kolarbear.wanandroid.api.ApiService;
+import com.kolarbear.wanandroid.aspectj.annotation.LoginCheck;
 import com.kolarbear.wanandroid.base.interfac.ICollectView;
 import com.kolarbear.wanandroid.base.interfac.IPresenter;
 import com.kolarbear.wanandroid.base.interfac.IView;
@@ -47,6 +48,7 @@ public class BasePresenter<V extends IView> implements IPresenter {
      * 收藏
      * @param id
      */
+    @LoginCheck(type = 0)
     public void collect(int id)
     {
         service.collect(id)
@@ -75,6 +77,7 @@ public class BasePresenter<V extends IView> implements IPresenter {
      * 取消收藏
      * @param id
      */
+    @LoginCheck(type = 1)
     public void cancelCollect(int id)
     {
         service.cancelCollect(id)

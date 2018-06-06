@@ -89,4 +89,14 @@
             />
     </TableRow>
 
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="@string/register_description"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

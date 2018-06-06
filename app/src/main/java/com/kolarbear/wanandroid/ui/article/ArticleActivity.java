@@ -19,7 +19,9 @@ import com.just.agentweb.AgentWeb;
 import com.just.agentweb.ChromeClientCallbackManager;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
+import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.constant.Constant;
+import com.kolarbear.wanandroid.utils.UserController;
 
 import butterknife.BindView;
 
@@ -27,7 +29,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/5/24.
  */
 @Route(path = "/article/ArticleActivity")
-public class ArticleActivity extends BaseActivity {
+public class ArticleActivity extends BaseActivity<ArticlePresenter> implements ArticleContract.View {
 
 
     @Autowired
@@ -71,7 +73,7 @@ public class ArticleActivity extends BaseActivity {
 
     @Override
     protected void initInject() {
-
+        component.inject(this);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class ArticleActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.menuCollect:
+                collectArticle();
                 ToastUtils.showShort("收藏");
                 break;
             case R.id.menuSystemBrowser:
@@ -102,6 +105,18 @@ public class ArticleActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 收藏文章
+     */
+    private void collectArticle() {
+        if (id==0)
+        {
+            presenter.collectArticle(title,author,url);
+        }else {
+            presenter.collect(id);
+        }
     }
 
     @Override
@@ -124,4 +139,20 @@ public class ArticleActivity extends BaseActivity {
             toolbar.setTitle(title);
         }
     };
+
+    @Override
+    public void collect(BaseBean result) {
+        if (result.errorCode==0)
+        {
+            ToastUtils.showShort("收藏成功");
+        }
+    }
+
+    @Override
+    public void cancelCollect(BaseBean result) {
+        if (result.errorCode==0)
+        {
+            ToastUtils.showShort("取消收藏成功");
+        }
+    }
 }

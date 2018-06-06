@@ -19,7 +19,8 @@ public class LoginInterceptor implements IInterceptor{
     private static final String TAG = "LoginInterceptor";
     @Override
     public void process(Postcard postcard, InterceptorCallback callback) {
-        if (UserController.getInstance().isLogin())
+            callback.onContinue(postcard);
+      /*  if (UserController.getInstance().isLogin())
         {
             callback.onContinue(postcard);
         }else {
@@ -32,7 +33,7 @@ public class LoginInterceptor implements IInterceptor{
             ARouter.getInstance().build("/login/LoginActivity")
                     .navigation();
           }
-        }
+        }*/
     }
 
     @Override
