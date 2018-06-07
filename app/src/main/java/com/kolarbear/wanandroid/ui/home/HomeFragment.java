@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
@@ -145,12 +146,25 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        collectPosition = position;
-        if (!this.adapter.getItem(position).isCollect())
+        switch (view.getId())
         {
-            presenter.collect(this.adapter.getItem(position).getId());
-        }else {
-            presenter.cancelCollect(this.adapter.getItem(position).getId());
+            case R.id.tv_article_category:
+                HomeArticle.DatasBean item = this.adapter.getItem(position);
+                ARouter.getInstance()
+                        .build("/category_articles/ArticleListActivity")
+                        .withInt("cid",item.getChapterId())
+                        .withString("title",item.getChapterName())
+                        .navigation();
+                break;
+            case R.id.iv_collect:
+                collectPosition = position;
+                if (!this.adapter.getItem(position).isCollect())
+                {
+                    presenter.collect(this.adapter.getItem(position).getId());
+                }else {
+                    presenter.cancelCollect(this.adapter.getItem(position).getId());
+                }
+                break;
         }
     }
 

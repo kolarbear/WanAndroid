@@ -21,6 +21,7 @@ public class HomeAdapter extends BaseQuickAdapter<HomeArticle.DatasBean,BaseView
     @Override
     protected void convert(BaseViewHolder helper, HomeArticle.DatasBean item) {
         helper.addOnClickListener(R.id.iv_collect);
+        helper.addOnClickListener(R.id.tv_article_category);
         helper.setText(R.id.tv_author_name,item.getAuthor())
                 .setText(R.id.tv_date,item.getNiceDate())
                 .setText(R.id.tv_article_category,item.getChapterName())
