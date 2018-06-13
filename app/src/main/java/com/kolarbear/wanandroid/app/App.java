@@ -2,11 +2,14 @@ package com.kolarbear.wanandroid.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.Utils;
 import com.kolarbear.wanandroid.BuildConfig;
+import com.kolarbear.wanandroid.bean.home.DaoMaster;
+import com.kolarbear.wanandroid.bean.home.DaoSession;
 import com.kolarbear.wanandroid.constant.Constant;
 import com.kolarbear.wanandroid.di.component.AppComponent;
 import com.kolarbear.wanandroid.di.component.DaggerAppComponent;
@@ -38,10 +41,14 @@ public class App extends Application {
     private AppComponent appComponent;
     private static final String TAG = "App";
      public static Context context;
+    private SQLiteDatabase database;
+    private DaoSession daoSession;
+    private static App app;
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
+        app = this;
         LeakCanary.install(this);//内存泄漏检测
         //初始化工具类
         Utils.init(this);
@@ -53,7 +60,28 @@ public class App extends Application {
         initAppComponent();
         initFragmentation();
         initThreadExceptionHandler();
+        initGreenDao();
     }
+
+    private void initGreenDao() {
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, "home-db");
+        database = devOpenHelper.getWritableDatabase();
+        daoSession = new DaoMaster(database).newSession();
+    }
+
+    public static App getApp()
+    {
+        return app;
+    }
+
+    public SQLiteDatabase getDatabase(){
+        return database;
+    }
+
+    public DaoSession getDaoSession(){
+        return daoSession;
+    }
+
 
     private void initThreadExceptionHandler() {
         final Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();

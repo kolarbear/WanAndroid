@@ -60,6 +60,10 @@ public class HotFragment extends BaseFragment<HotPresenter> implements HotContra
         webs = new ArrayList<>();
     }
 
+    /**
+     * 在 {@link #onSupportVisible}后调用
+     * @param savedInstanceState
+     */
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
@@ -70,6 +74,11 @@ public class HotFragment extends BaseFragment<HotPresenter> implements HotContra
         presenter.hotWords();
         presenter.websites();
         setListener();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
     }
 
     private void setListener() {

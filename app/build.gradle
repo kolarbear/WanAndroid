@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -87,6 +87,8 @@ dependencies {
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     //aspectJ
     implementation 'org.aspectj:aspectjrt:1.8.9'
+    //greenDao
+    implementation 'org.greenrobot:greendao:3.2.2' // add library
 }
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler

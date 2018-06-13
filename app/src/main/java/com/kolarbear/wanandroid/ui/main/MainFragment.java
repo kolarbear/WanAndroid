@@ -1,11 +1,15 @@
 package com.kolarbear.wanandroid.ui.main;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseFragment;
@@ -14,6 +18,7 @@ import com.kolarbear.wanandroid.ui.hot.HotFragment;
 import com.kolarbear.wanandroid.ui.knowledge.KnowledgeFragment;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -25,6 +30,7 @@ public class MainFragment extends BaseFragment implements BottomNavigationView.O
 
     @BindView(R.id.bottomNavigation)
     BottomNavigationView bottomNavigation;
+
     private ISupportFragment[] mFragments = new ISupportFragment[3];
     public static final int FIRST = 0;
     public static final int SECOND = 1;
@@ -52,6 +58,7 @@ public class MainFragment extends BaseFragment implements BottomNavigationView.O
     @Override
     protected void initView(View view) {
         bottomNavigation.setOnNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -81,6 +88,8 @@ public class MainFragment extends BaseFragment implements BottomNavigationView.O
         _mActivity.setToolbarText("Hot");
         index = 2;
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

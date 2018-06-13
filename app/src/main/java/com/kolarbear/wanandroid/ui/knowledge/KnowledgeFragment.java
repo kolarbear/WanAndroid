@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -84,6 +85,16 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         headers = new ArrayList<>();
         refreshLayout.setOnRefreshListener(this);
         presenter.getKnowledgeTree();
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
     }
 
     private void initRightList() {

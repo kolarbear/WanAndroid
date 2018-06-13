@@ -4,6 +4,7 @@ import com.kolarbear.wanandroid.base.interfac.ICollectView;
 import com.kolarbear.wanandroid.base.interfac.IPresenter;
 import com.kolarbear.wanandroid.base.interfac.IView;
 import com.kolarbear.wanandroid.bean.BaseBean;
+import com.kolarbear.wanandroid.bean.home.Articles;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
 
@@ -17,7 +18,7 @@ public interface HomeContract {
     interface IHomeView extends ICollectView
     {
         void showBanner(List<HomeBanner> homeBanners);
-        void showArticles(List<HomeArticle.DatasBean> datas, int type);
+        void showArticles(List<Articles> datas, int type);
 
     }
 

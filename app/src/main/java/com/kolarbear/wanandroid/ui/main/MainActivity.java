@@ -1,5 +1,8 @@
 package com.kolarbear.wanandroid.ui.main;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.base.BaseActivity;
+import com.kolarbear.wanandroid.ui.SplashActivity;
 import com.kolarbear.wanandroid.ui.home.HomeFragment;
 import com.kolarbear.wanandroid.ui.hot.HotFragment;
 import com.kolarbear.wanandroid.utils.UserController;
@@ -39,6 +44,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     DrawerLayout drawerLayout;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.rl_splash)
+    RelativeLayout rlSplash;
     private TextView tvLogin; //登录的用户
     private TextView tvName; //登录的用户
     private LoginBroadcastReceiver receiver;
@@ -63,10 +70,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         {
             loadRootFragment(R.id.contentPanel,MainFragment.newInstance());
         }
-
-
+        rlSplash.setVisibility(View.GONE);
+//        startSplash();
     }
-
+    //开启闪屏动画
+    public void startSplash()
+    {
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(rlSplash, "alpha", 1);
+        alpha.setDuration(3000);
+        alpha.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                rlSplash.setVisibility(View.GONE);
+            }
+        });
+        alpha.start();
+    }
     private void setDrawerLayout() {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.layout_open, R.string.layout_close);
         drawerToggle.setDrawerIndicatorEnabled(true);

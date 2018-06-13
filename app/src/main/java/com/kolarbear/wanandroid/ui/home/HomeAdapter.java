@@ -3,6 +3,7 @@ package com.kolarbear.wanandroid.ui.home;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.kolarbear.wanandroid.R;
+import com.kolarbear.wanandroid.bean.home.Articles;
 import com.kolarbear.wanandroid.bean.home.HomeArticle;
 
 import javax.inject.Inject;
@@ -11,7 +12,7 @@ import javax.inject.Inject;
  * Created by Administrator on 2018/5/21.
  */
 
-public class HomeAdapter extends BaseQuickAdapter<HomeArticle.DatasBean,BaseViewHolder> {
+public class HomeAdapter extends BaseQuickAdapter<Articles,BaseViewHolder> {
 
     @Inject
     public HomeAdapter() {
@@ -19,7 +20,7 @@ public class HomeAdapter extends BaseQuickAdapter<HomeArticle.DatasBean,BaseView
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, HomeArticle.DatasBean item) {
+    protected void convert(BaseViewHolder helper, Articles item) {
         helper.addOnClickListener(R.id.iv_collect);
         helper.addOnClickListener(R.id.tv_article_category);
         helper.setText(R.id.tv_author_name,item.getAuthor())

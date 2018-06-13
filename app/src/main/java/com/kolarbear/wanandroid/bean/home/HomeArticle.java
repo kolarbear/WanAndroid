@@ -1,5 +1,8 @@
 package com.kolarbear.wanandroid.bean.home;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.util.List;
 
 /**
@@ -25,7 +28,7 @@ public class HomeArticle {
     private int pageCount;
     private int size;
     private int total;
-    private List<DatasBean> datas;
+    private List<Articles> datas;
 
     public int getCurPage() {
         return curPage;
@@ -75,14 +78,15 @@ public class HomeArticle {
         this.total = total;
     }
 
-    public List<DatasBean> getDatas() {
+    public List<Articles> getDatas() {
         return datas;
     }
 
-    public void setDatas(List<DatasBean> datas) {
+    public void setDatas(List<Articles> datas) {
         this.datas = datas;
     }
 
+    @Entity
     public static class DatasBean {
         /**
          * apkLink :
@@ -109,7 +113,8 @@ public class HomeArticle {
          * visible : 1
          * zan : 0
          */
-
+        @Id(autoincrement = true)
+        private Long index;
         private String apkLink;
         private String author;
         private int chapterId;
