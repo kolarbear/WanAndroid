@@ -1,12 +1,14 @@
 package com.kolarbear.wanandroid.bean.knowledge;
 
+import org.greenrobot.greendao.annotation.Entity;
+
 import java.util.List;
 
 /**
  *  知识体系
  *  Created by Administrator on 2018/5/22.
  */
-
+//@Entity(active = true)
 public class KnowledgeBean {
 
 

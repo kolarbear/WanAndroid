@@ -29,6 +29,13 @@ android {
     buildToolsVersion '26.0.2'
 }
 
+
+greendao {
+    schemaVersion 1
+    daoPackage 'com.kolarbear.wanandroid.greendao'
+    targetGenDir 'src/main/java'
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'

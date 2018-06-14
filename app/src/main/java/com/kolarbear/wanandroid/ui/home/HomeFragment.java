@@ -11,17 +11,15 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.app.App;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.BaseBean;
 import com.kolarbear.wanandroid.bean.home.Articles;
-import com.kolarbear.wanandroid.bean.home.ArticlesDao;
-import com.kolarbear.wanandroid.bean.home.HomeArticle;
 import com.kolarbear.wanandroid.bean.home.HomeBanner;
-import com.kolarbear.wanandroid.bean.home.HomeBannerDao;
+import com.kolarbear.wanandroid.greendao.ArticlesDao;
+import com.kolarbear.wanandroid.greendao.HomeBannerDao;
 import com.kolarbear.wanandroid.ui.article.ArticleActivity;
 import com.kolarbear.wanandroid.utils.GlideImageLoader;
 import com.kolarbear.wanandroid.utils.Utils;
@@ -180,11 +178,13 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     //刷新
     @Override
     public void onRefresh() {
+        if (data_source==TYPE_NET)
         presenter.refresh();
     }
     //加载更多
     @Override
     public void onLoadMoreRequested() {
+        if (data_source==TYPE_NET)
         presenter.loadMore();
     }
 

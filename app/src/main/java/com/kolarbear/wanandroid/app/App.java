@@ -8,14 +8,14 @@ import android.util.Log;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.Utils;
 import com.kolarbear.wanandroid.BuildConfig;
-import com.kolarbear.wanandroid.bean.home.DaoMaster;
-import com.kolarbear.wanandroid.bean.home.DaoSession;
 import com.kolarbear.wanandroid.constant.Constant;
 import com.kolarbear.wanandroid.di.component.AppComponent;
 import com.kolarbear.wanandroid.di.component.DaggerAppComponent;
 import com.kolarbear.wanandroid.di.module.ApplicationModule;
 import com.kolarbear.wanandroid.di.module.ClientModule;
 import com.kolarbear.wanandroid.di.module.ServiceModule;
+import com.kolarbear.wanandroid.greendao.DaoMaster;
+import com.kolarbear.wanandroid.greendao.DaoSession;
 import com.kolarbear.wanandroid.http.HttpGlobalHandler;
 import com.squareup.leakcanary.LeakCanary;
 

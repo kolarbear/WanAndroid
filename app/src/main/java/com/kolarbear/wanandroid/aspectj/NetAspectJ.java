@@ -18,11 +18,14 @@ import org.aspectj.lang.annotation.Pointcut;
 public class NetAspectJ {
 
     private static final String TAG = "NetAspectJ";
-    @Pointcut("execution(* com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener.onItemClick(..))")
+    @Pointcut("execution(* com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener.onItemClick(..))" +
+            "||execution(* com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener.onItemChildClick(..))" +
+            "||execution()")
     public void pointcut()
     {
 
     }
+
     @Around("pointcut()")
     public void NetCheck(ProceedingJoinPoint point) throws Throwable {
         Log.e(TAG, "NetCheck: "+point.toString());
