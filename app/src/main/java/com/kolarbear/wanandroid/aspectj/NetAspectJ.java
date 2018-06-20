@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
- * 在每次操作前都去检查网络状态
+ * 在每次点击跳转详情页前都去检查网络状态
  * Created by Administrator on 2018/6/13.
  */
 @Aspect
@@ -20,7 +20,7 @@ public class NetAspectJ {
     private static final String TAG = "NetAspectJ";
     @Pointcut("execution(* com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener.onItemClick(..))" +
             "||execution(* com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener.onItemChildClick(..))" +
-            "||execution()")
+            "||execution(* com.kolarbear.wanandroid.ui.knowledge.RightAdapter.OnItemClickListener.click(..))")
     public void pointcut()
     {
 

@@ -11,10 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kolarbear.wanandroid.R;
+import com.kolarbear.wanandroid.app.App;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
+import com.kolarbear.wanandroid.greendao.KnowledgeBeanDao;
 import com.kolarbear.wanandroid.ui.category_articles.ArticleListActivity;
 import com.kolarbear.wanandroid.utils.Utils;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -84,12 +87,19 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         reversePositions = new ArrayList<>();
         headers = new ArrayList<>();
         refreshLayout.setOnRefreshListener(this);
-        presenter.getKnowledgeTree();
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
+        if (NetworkUtils.isConnected())
+        {//有网络就请求最新数据
+            presenter.getKnowledgeTree();
+        }else {//从数据库中取
+            KnowledgeBeanDao dao = App.getApp().getDaoSession().getKnowledgeBeanDao();
+            List<KnowledgeBean> knowledgeBeans = dao.loadAll();
+            showKnowledgeTree(knowledgeBeans);
+        }
     }
 
     @Override
@@ -231,6 +241,14 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         Utils.update(refreshLayout,leftAdapter,knowledgeBean,0);
         rightAdapter.setHeaders(headers);
         rightAdapter.setDatas(childrens);
+        if (NetworkUtils.isConnected())//有网络时缓存到本地数据库
+        {
+            KnowledgeBeanDao dao = App.getApp().getDaoSession().getKnowledgeBeanDao();
+            dao.deleteAll();
+            for (int i = 0; i < knowledgeBean.size(); i++) {
+                dao.insert(knowledgeBean.get(i));
+            }
+        }
     }
 
     private void prepareRightData(List<KnowledgeBean> knowledgeBean) {

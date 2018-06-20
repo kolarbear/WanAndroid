@@ -1,6 +1,5 @@
 package com.kolarbear.wanandroid.ui.knowledge;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.kolarbear.wanandroid.R;
 import com.kolarbear.wanandroid.bean.knowledge.KnowledgeBean;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 

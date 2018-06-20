@@ -61,7 +61,7 @@ public class HomeBannerDao extends AbstractDao<HomeBanner, Long> {
                 "\"TYPE\" INTEGER NOT NULL ," + // 7: type
                 "\"URL\" TEXT);"); // 8: url
         // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_AWESOME_BANNER_DESC_DESC ON \"AWESOME_BANNER\"" +
+        db.execSQL("CREATE INDEX " + constraint + "IDX_AWESOME_BANNER_DESC_DESC ON \"AWESOME_BANNER\"" +
                 " (\"DESC\" DESC);");
     }
 

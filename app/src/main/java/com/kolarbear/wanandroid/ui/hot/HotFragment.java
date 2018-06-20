@@ -2,13 +2,18 @@ package com.kolarbear.wanandroid.ui.hot;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.kolarbear.wanandroid.R;
+import com.kolarbear.wanandroid.app.App;
 import com.kolarbear.wanandroid.base.BaseFragment;
 import com.kolarbear.wanandroid.bean.hot.HotBean;
 import com.kolarbear.wanandroid.bean.hot.WebsiteBean;
+import com.kolarbear.wanandroid.greendao.HotBeanDao;
+import com.kolarbear.wanandroid.greendao.WebsiteBeanDao;
 import com.kolarbear.wanandroid.ui.article.ArticleActivity;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -34,7 +39,7 @@ public class HotFragment extends BaseFragment<HotPresenter> implements HotContra
     List<WebsiteBean> webs;
     private HotTagAdapter hotTagAdapter;
     private WebsTagAdapter websTagAdapter;
-
+    private static final String TAG = "HotFragment";
     @Override
     protected void initInject() {
         component.inject(this);
@@ -71,8 +76,17 @@ public class HotFragment extends BaseFragment<HotPresenter> implements HotContra
         websTagAdapter = new WebsTagAdapter(getContext(), webs);
         flowlayoutSearch.setAdapter(hotTagAdapter);
         flowlayoutUse.setAdapter(websTagAdapter);
-        presenter.hotWords();
-        presenter.websites();
+        if (NetworkUtils.isConnected())
+        {
+            presenter.hotWords();
+            presenter.websites();
+        }else {
+            HotBeanDao hotBeanDao = App.getApp().getDaoSession().getHotBeanDao();
+            showHot(hotBeanDao.loadAll());
+            WebsiteBeanDao websiteBeanDao = App.getApp().getDaoSession().getWebsiteBeanDao();
+            showSites(websiteBeanDao.loadAll());
+        }
+
         setListener();
     }
 
@@ -112,6 +126,14 @@ public class HotFragment extends BaseFragment<HotPresenter> implements HotContra
             hots.addAll(data);
         }
         hotTagAdapter.notifyDataChanged();
+        if (NetworkUtils.isConnected())
+        {
+            HotBeanDao hotBeanDao = App.getApp().getDaoSession().getHotBeanDao();
+            hotBeanDao.deleteAll();
+            for (int i = 0; i < data.size(); i++) {
+                hotBeanDao.insert(data.get(i));
+            }
+        }
     }
 
     @Override
@@ -121,5 +143,13 @@ public class HotFragment extends BaseFragment<HotPresenter> implements HotContra
             webs.addAll(data);
         }
         websTagAdapter.notifyDataChanged();
+        if (NetworkUtils.isConnected())
+        {
+            WebsiteBeanDao websiteBeanDao = App.getApp().getDaoSession().getWebsiteBeanDao();
+            websiteBeanDao.deleteAll();
+            for (int i = 0; i < data.size(); i++) {
+                websiteBeanDao.insert(data.get(i));
+            }
+        }
     }
 }

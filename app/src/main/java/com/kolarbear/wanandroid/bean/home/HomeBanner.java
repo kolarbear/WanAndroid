@@ -12,7 +12,7 @@ import com.kolarbear.wanandroid.greendao.HomeBannerDao;
  * Created by Administrator on 2018/5/21.
  */
 @Entity(active = true, nameInDb = "AWESOME_BANNER",
-indexes = {@Index(value = "desc DESC",unique = true)})
+indexes = {@Index(value = "desc DESC")})
 public class HomeBanner {
 
 

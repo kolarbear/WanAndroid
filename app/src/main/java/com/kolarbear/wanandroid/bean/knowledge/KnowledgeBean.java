@@ -1,14 +1,19 @@
 package com.kolarbear.wanandroid.bean.knowledge;
 
+import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Transient;
 
 import java.util.List;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  *  知识体系
  *  Created by Administrator on 2018/5/22.
  */
-//@Entity(active = true)
+@Entity(indexes = {@Index("name DESC"),@Index("courseId DESC")})
 public class KnowledgeBean {
 
 
@@ -21,7 +26,8 @@ public class KnowledgeBean {
      * parentChapterId : 0
      * visible : 1
      */
-
+    @Id(autoincrement = true)
+    private Long index;
     private int courseId;
     private int id;
     private String name;
@@ -37,8 +43,25 @@ public class KnowledgeBean {
     public void setSelect(boolean select) {
         this.select = select;
     }
-
+    @Convert(columnType = String.class,converter = ChildConverter.class)
     private List<ChildrenBean> children;
+
+    @Generated(hash = 263131652)
+    public KnowledgeBean(Long index, int courseId, int id, String name, int order, int parentChapterId, int visible, boolean select, List<ChildrenBean> children) {
+        this.index = index;
+        this.courseId = courseId;
+        this.id = id;
+        this.name = name;
+        this.order = order;
+        this.parentChapterId = parentChapterId;
+        this.visible = visible;
+        this.select = select;
+        this.children = children;
+    }
+
+    @Generated(hash = 1573557930)
+    public KnowledgeBean() {
+    }
 
     public int getCourseId() {
         return courseId;
@@ -94,6 +117,18 @@ public class KnowledgeBean {
 
     public void setChildren(List<ChildrenBean> children) {
         this.children = children;
+    }
+
+    public Long getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(Long index) {
+        this.index = index;
+    }
+
+    public boolean getSelect() {
+        return this.select;
     }
 
     public static class ChildrenBean {
